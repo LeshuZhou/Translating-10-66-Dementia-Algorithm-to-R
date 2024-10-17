@@ -1,0 +1,243 @@
+---
+title: "neur R"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-04-20"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+```
+
+
+```{r}
+neur <- read.csv("simu_neuroex.csv")
+neur <- neur %>% 
+  arrange(HOUSEID, PARTICID)
+```
+
+
+# recode
+```{r}
+var <- c("NOE1", "NOE2A", "NOE2B", "NOE2C", "NOE3B", "NEO4B", "NEO4E",
+           "NEO4F", "NEO5A", "NEO6AU", "NEO6BU", "NEO6CU", "NEO6DU", "NEO6AL",
+           "NEO6BL", "NEO6CL", "NEO6DL", "NEO7A", "NEO7B", "NEO7C", "NEO7D",
+           "NEO7E", "NEO7F", "NEO8C", "NEO8D", "NEO11A", "NEO11B", "NEO11C",
+           "NEO11D", "NEO11E", "NEO12C", "NEO13D", "NEO14E", "NEO14G")
+
+
+neur <- neur %>%
+  mutate(across(all_of(var), ~ ifelse(. == 9, 0, .)))
+
+```
+
+# rdrift & ldrift
+```{r}
+neur <- neur %>%
+  mutate(RDRIFT = ifelse(NEO5A == 1 & NEO5B == 1, 1, 0),
+         LDRIFT= ifelse(NEO5A == 1 & NEO5B == 2, 1, 0))
+
+```
+
+
+# more variables  
+```{r}
+neur <- neur %>%
+  mutate(LKREFLEX = ifelse(NEO11E > NEO11D, 1, NA),
+         RKREFLEX = ifelse(NEO11D > NEO11E, 1, NA),
+         LBREFLEX = ifelse(NEO11B > NEO11A, 1, NA),
+         RBREFLEX = ifelse(NEO11A > NEO11B, 1, NA),
+         RULRIGID = ifelse(NEO6AU > NEO6BU, 1, NA),
+         LULRIGID = ifelse(NEO6BU > NEO6AU, 1, NA),
+         RLLRIGID = ifelse(NEO6AL > NEO6BL, 1, NA),
+         LLLRIGID = ifelse(NEO6BL > NEO6AL, 1, NA),
+         RSWING = ifelse(NEO12C > NEO13D, 1, NA),
+         LSWING = ifelse(NEO13D > NEO12C, 1, NA),
+         RFFM = ifelse(NEO7A > NEO7B, 1, NA),
+         LFFM = ifelse(NEO7B > NEO7A, 1, NA),
+         RALTCORD = ifelse(NEO7E > NEO7F, 1, NA),
+         LALTCORD = ifelse(NEO7F > NEO7E, 1, NA),
+         LKBRISK = ifelse(NEO11E > 1, 1, NA),
+         RKBRISK = ifelse(NEO11D > 1, 1, NA),
+         LBBRISK = ifelse(NEO11B > 1, 1, NA),
+         RBBRISK = ifelse(NEO11A > 1, 1, NA))
+
+
+```
+
+
+# deal with NA
+```{r}
+vars <- c("LKREFLEX", "RKREFLEX", "LBREFLEX", "RBREFLEX", "RULRIGID", 
+          "LULRIGID", "RLLRIGID", "LLLRIGID", "RSWING", "LSWING", "RFFM", "LFFM", 
+          "RALTCORD", "LALTCORD", "LKBRISK", "RKBRISK", "LBBRISK", "RBBRISK")
+
+neur <- neur %>%
+  mutate(across(all_of(vars), ~ replace(., is.na(.), 0)))
+```
+
+
+# calculations
+```{r}
+neur <- neur %>%
+  mutate(RCVA = RDRIFT + NEO6AU + NEO6AL + NEO7A + NEO7C + NEO7E + NEO12C + RKBRISK + RBBRISK,
+         LCVA = LDRIFT + NEO6BU + NEO6BL + NEO7B + NEO7D + NEO7F + NEO13D + LKBRISK + LBBRISK,
+         LASSYM = LKREFLEX + LBREFLEX + LULRIGID + LLLRIGID + LSWING + LFFM + LALTCORD,
+         RASSYM = RKREFLEX + RBREFLEX + RULRIGID + RLLRIGID + RSWING + RFFM + RALTCORD)
+
+
+```
+
+
+
+# assym
+```{r}
+neur <- neur %>%
+  mutate(ASSYM = 0,
+         ASSYM = case_when(LASSYM == 1 ~ 1,
+                           RASSYM == 1 ~ 2,
+                           LASSYM == 1 & RASSYM == 1 & ASSYM %in% 0:2 ~ 0,
+                           TRUE ~ 0))
+```
+
+
+# parkstep & parktime & parks
+```{r}
+neur <- neur %>%
+  mutate(PARKSTEP = case_when(
+    NEO12A >= 15 & NEO12A <= 19 ~ 1,
+    NEO12A >= 0 & NEO12A <= 14 ~ 0,
+    NEO12A >= 20 ~ 2,
+    NEO12A == 99 ~ NA),
+    
+    PARKTIME = case_when(
+    NEO12B >= 11 & NEO12B <= 16 ~ 1,
+    NEO12B >= 0 & NEO12B <= 10 ~ 0,
+    NEO12B >= 17 ~ 2,
+    NEO12B == 999 ~ NA),
+    PARKS = NOE1 + NOE2A + NEO4B + NEO4E + NEO4F + NEO6CU + NEO6DU + NEO6CL + NEO6DL + NEO14G + PARKTIME + PARKSTEP)
+
+
+```
+
+
+# NAs
+```{r}
+varis <- c("BPSYS1", "BPDIAS1", "BPSYS2", "BPDIAS2", "BPSYS3", "BPDIAS3", 
+           "ARMCIRC", "SKCIRC", "WSTCIRC", "HIPCIRC", "LGLENGTH", "HEIGHT")
+
+neur <- neur %>%
+  mutate(across(all_of(varis), ~ ifelse(. == 999, NA, .)))
+
+```
+
+
+# new variables
+```{r}
+neur <- neur %>%
+  mutate(BPSYS = (BPSYS1 + BPSYS2) / 2,
+         BPDIAS = (BPDIAS1 + BPDIAS2) / 2,
+         WHRATIO = WSTCIRC / HIPCIRC,
+         BPDROP = BPSYS - BPSYS3,
+         HYPERTEN = 0,
+         HYPERTEN = ifelse(BPSYS >= 140 | BPDIAS >= 95, 1, 0))
+
+
+
+```
+
+
+```{r}
+write.table(neur, file = "simuR_neuroex.csv", sep = ",", row.names = F)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

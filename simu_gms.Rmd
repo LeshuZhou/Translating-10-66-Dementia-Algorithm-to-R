@@ -1,0 +1,111 @@
+---
+title: "simu_gms"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-08-07"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+n = 1000
+set.seed(1105)
+start_date <- as.Date("1990-01-01")
+end_date <- as.Date("2020-12-31")
+date_sequence <- seq(from = start_date, to = end_date, by = "day")
+DATE <- sample(date_sequence, n, replace = T)
+INTERID <- sample(10 : 9999, n, replace = F)
+HOUSEID <- sample(n : 9999, n, replace = F)
+PARTICID <- sample(1 : 9999, n, replace = F)
+Q211 <- sample(c(0, 1, 2), n, replace = T)
+Q291 <- sample(c(0, 1), n, replace = T)
+Q301 <- sample(c(0, 1), n, replace = T)
+Q1041 <- sample(c(0, 1, 2), n, replace = T)
+Q541 <- sample(c(0, 1), n, replace = T)
+Q1131 <- sample(c(0, 1, 2), n, replace = T)
+Q1051 <- sample(c(0, 1, 2), n, replace = T)
+Q511 <- sample(c(0, 1, 2), n, replace = T)
+Q721 <- sample(c(0, 1, 2), n, replace = T)
+Q1171 <- sample(c(0, 1, 2), n, replace = T)
+Q1181 <- sample(c(0, 1, 2), n, replace = T)
+Q1141 <- sample(c(0, 1, 2), n, replace = T)
+Q221 <- sample(c(0, 1, 2), n, replace = T)
+```
+
+
+
+
+```{r}
+simu_gms <- data.frame(DATE, INTERID, HOUSEID, PARTICID, Q211, Q291, Q301, Q1041, Q541, Q1131, Q1051, Q511, Q721, Q1171, Q1181, Q1141, Q221)
+simu_gms <- simu_gms %>%
+  arrange(HOUSEID, PARTICID)
+
+```
+
+
+
+```{r}
+write.table(simu_gms, file = "simu_gms.csv", sep = ",", row.names = F)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,240 @@
+---
+title: "simu_household"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-08-04"
+output: html_document
+---
+```{r}
+library(dplyr)
+```
+
+
+```{r}
+n = 1000
+set.seed(1105)
+start_date <- as.Date("1990-01-01")
+end_date <- as.Date("2020-12-31")
+date_sequence <- seq(from = start_date, to = end_date, by = "day")
+DATE <- sample(date_sequence, n, replace = T)
+INTERID <- sample(10 : 9999, n, replace = F)
+HOUSEID <- sample(n : 9999, n, replace = F)
+PARTICID <- sample(1 : 9999, n, replace = F)
+CONTNA1 <- sample(LETTERS, n, replace = TRUE)
+CONTAD11 <- sample(LETTERS, n, replace = TRUE)
+CONTAD21 <- sample(LETTERS, n, replace = TRUE)
+CONTCT1 <- sample(LETTERS, n, replace = TRUE)
+PHONE11 <- sample(10000:99999, n, replace = TRUE)
+PHONE12 <- sample(10000:99999, n, replace = TRUE)
+CONTNA2 <- sample(LETTERS, n, replace = TRUE)
+CONTAD12 <- sample(LETTERS, n, replace = TRUE)
+CONTAD22 <- sample(LETTERS, n, replace = TRUE)
+CONTCT2 <- sample(LETTERS, n, replace = TRUE)
+PHONE21 <- sample(10000:99999, n, replace = TRUE)
+PHONE22 <- sample(10000:99999, n, replace = TRUE)
+AGEPART <- sample(c(18:80, 999), n, replace = TRUE)
+AGEINFO <-  sample(c(18:80, 999), n, replace = TRUE)
+AGEDOC <-  sample(c(18:80, 999), n, replace = TRUE)
+AGEDISC <- ifelse(AGEPART == AGEINFO & AGEPART == AGEDOC, 0, ifelse(abs(AGEPART - AGEINFO) >= 1 | abs(AGEPART - AGEDOC) >= 1 | abs(AGEINFO - AGEDOC) >= 1, 1, 0 ))# if = 0 skip to ACCSTAT
+
+AGEEXPL <- sample(c(1, 0), n, replace = TRUE)    # if = 0 skip to AGEDISCY
+AGE1 <- sample(c(18:80, 999), n, replace = TRUE)   # if it has answer skip to ACCSTAT
+AGEDISCY <- sample(c(1, 0), n, replace = TRUE)    # if = 0 skip to ACCSTAT
+AGE2 <- sample(c(18:80, 999), n, replace = TRUE)
+ACCSTAT <- sample(c(1, 2), n, replace = TRUE)    # if = 1 skip to ROOMS
+RENTWK <- sample(200:1000, n, replace = TRUE)
+ROOMS <- sample(1:5, n, replace = TRUE)
+ADULTS <- sample(2:4, n, replace = TRUE)
+CHILD <- sample(0:3, n, replace = TRUE)
+CORAGE1 <- sample(c(18:80, 999), n, replace = TRUE)
+CORSEX1 <- sample(c(1, 2), n, replace = TRUE)
+CORREL1 <- sample(1:9, n, replace = TRUE)
+CORAGE2 <- sample(c(18:80, 999), n, replace = TRUE)
+CORSEX2 <- sample(c(1, 2), n, replace = TRUE)
+CORREL2 <- sample(1:9, n, replace = TRUE)
+CORAGE3 <- sample(c(18:80, 999), n, replace = TRUE)
+CORSEX3 <- sample(c(1, 2), n, replace = TRUE)
+CORREL3 <- sample(1:9, n, replace = TRUE)
+CORAGE3 <- NA
+CORSEX3 <- NA
+CORREL3 <- NA
+CORAGE4 <- NA
+CORSEX4 <- NA
+CORREL4 <- NA
+CORAGE5 <- NA
+CORSEX5 <- NA
+CORREL5 <- NA
+CORAGE6 <- NA
+CORSEX6 <- NA
+CORREL6 <- NA
+CORAGE7 <- NA
+CORSEX7 <- NA
+CORREL7 <- NA
+CORAGE8 <- NA
+CORSEX8 <- NA
+CORREL8 <- NA
+CORAGE9 <- NA
+CORSEX9 <- NA
+CORREL9 <- NA
+CORAGE10 <- NA
+CORSEX10 <- NA
+CORREL10 <- NA
+CARS <- sample(1:4, n, replace = TRUE)
+TV <- sample(c(1, 0), n, replace = TRUE)
+FRIDGE <- sample(c(1, 0), n, replace = TRUE)
+WATER <- sample(c(1, 0), n, replace = TRUE)
+ELEC <- sample(c(1, 0), n, replace = TRUE)
+PHONE <- sample(c(1, 0), n, replace = TRUE)
+TOILET <- sample(c(1, 0), n, replace = TRUE)
+BATH <- sample(c(1, 0), n, replace = TRUE)
+```
+
+
+
+```{r}
+simu_household <- data.frame(DATE, INTERID, HOUSEID, PARTICID, CONTNA1, CONTAD11, CONTAD21, CONTCT1, PHONE11, PHONE12, CONTNA2, CONTAD12, CONTAD22, CONTCT2, PHONE21, PHONE22, AGEPART, AGEINFO, AGEDOC, AGEDISC, AGEEXPL, AGE1, AGEDISCY, AGE2, ACCSTAT, RENTWK, ROOMS, ADULTS, CHILD, CORAGE1, CORSEX1, CORREL1, CORAGE2, CORSEX2, CORREL2, CORAGE3, CORSEX3, CORREL3, CORAGE4, CORSEX4, CORREL4, CORAGE5, CORSEX5, CORREL5, CORAGE6, CORSEX6, CORREL6, CORAGE7, CORSEX7, CORREL7, CORAGE8, CORSEX8, CORREL8, CORAGE9, CORSEX9, CORREL9, CORAGE10, CORSEX10, CORREL10, CARS, TV, FRIDGE, WATER, ELEC, PHONE, TOILET, BATH)
+
+```
+
+
+```{r}
+simu_household <- simu_household %>%
+  mutate(AGEEXPL = ifelse(AGEDISC == 0, NA, AGEEXPL),
+         AGE1 = ifelse(AGEDISC == 0 | AGEEXPL == 0, "", AGE1),
+         AGEDISCY = ifelse(AGEDISC == 0 | !is.na(AGE1), "", AGEDISCY),
+         AGE2 = ifelse(AGEDISC == 0 | !is.na(AGE1) | AGEDISCY == 0, "", AGE2),
+         RENTWK = ifelse(ACCSTAT == 1, NA, 200 * ROOMS))
+
+
+```
+
+
+```{r}
+write.table(simu_household, file = "simu_household.csv", sep = ",", row.names = F)
+```
+
+
+
+```{r}
+spsshouse <- read.csv("spss_household.csv")
+
+variables_in_df1_not_in_df2 <- setdiff(names(spsshouse), names(simu_household))
+variables_in_df2_not_in_df1 <- setdiff(names(simu_household), names(spsshouse))
+
+print(variables_in_df1_not_in_df2)
+print(variables_in_df2_not_in_df1)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

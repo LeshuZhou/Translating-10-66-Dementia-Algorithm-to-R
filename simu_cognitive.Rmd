@@ -1,0 +1,124 @@
+---
+title: "simu_cognitive"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-07-29"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+```
+
+
+```{r}
+n = 1000
+set.seed(1105)
+start_date <- as.Date("1990-01-01")
+end_date <- as.Date("2020-12-31")
+date_sequence <- seq(from = start_date, to = end_date, by = "day")
+DATE <- sample(date_sequence, n, replace = T)
+INTERID <- sample(10 : 9999, n, replace = F)
+HOUSEID <- sample(n : 9999, n, replace = F)
+PARTICID <- sample(1 : 9999, n, replace = F)
+LEARN1 <- sample(0:10, n, replace = T)
+LEARN2 <- sample(0:10, n, replace = T)
+LEARN3 <- sample(0:10, n, replace = T)
+NAME <- sample(c(0, 1), n, replace = T)
+PENCIL <- sample(c(0, 1), n, replace = T)
+WATCH <- sample(c(0, 1), n, replace = T)
+CHAIR <- sample(c(0, 1), n, replace = T)
+SHOES <- sample(c(0, 1), n, replace = T)
+KNUCKLE <- sample(c(0, 1), n, replace = T)
+ELBOW <- sample(c(0, 1), n, replace = T)
+SHOULD <- sample(c(0, 1), n, replace = T)
+BRIDGE <- sample(c(0, 1), n, replace = T)
+HAMMER <- sample(c(0, 1), n, replace = T)
+PRAY <- sample(c(0, 1), n, replace = T)
+CHEMIST <- sample(c(0, 1), n, replace = T)
+REPEAT <- sample(c(0, 1), n, replace = T)
+RECALL <- sample(0:10, n, replace = T)
+NRECALL <- sample(c(0, 1), n, replace = T)
+ANIMALS <- sample(5:30, n, replace = T)
+WORDIMM <- sample(0:3, n, replace = T)
+TRIALNO <- sample(0:5, n, replace = T)
+TOWN <- sample(c(0, 1), n, replace = T)
+CHIEF <- sample(c(0, 1), n, replace = T)
+STREET <- sample(c(0, 1), n, replace = T)
+STORE <- sample(c(0, 1), n, replace = T)
+ADDRESS <- sample(c(0, 1), n, replace = T)
+WORDDEL <- sample(0:3, n, replace = T)
+LONGMEM <- sample(c(0, 1), n, replace = T)
+MONTH <- sample(c(0, 1), n, replace = T)
+DAY <- sample(c(0, 1), n, replace = T)
+YEAR <- sample(c(0, 1), n, replace = T)
+SEASON <- sample(c(0, 1), n, replace = T)
+NOD <- sample(c(0, 1), n, replace = T)
+POINT <- sample(c(0, 1), n, replace = T)
+PAPER <- sample(0:3, n, replace = T)
+CIRCLE <- sample(c(0, 1), n, replace = T)
+PENTAG <- sample(c(0, 1), n, replace = T)
+STORY <- sample(0:6, n, replace = T)
+
+
+
+```
+
+
+
+```{r}
+simu_cognitive <- data.frame(DATE, INTERID, HOUSEID, PARTICID, LEARN1, LEARN2, LEARN3, NAME, PENCIL, WATCH, CHAIR, SHOES, KNUCKLE, ELBOW, SHOULD, BRIDGE, HAMMER, PRAY, CHEMIST, REPEAT, RECALL, NRECALL, ANIMALS, WORDIMM, TRIALNO, TOWN, CHIEF, STREET, STORE, ADDRESS, WORDDEL, LONGMEM, MONTH, DAY, YEAR, SEASON, NOD, POINT, PAPER, CIRCLE, PENTAG, STORY)
+
+
+```
+
+
+```{r}
+write.table(simu_cognitive, file = "simu_cognitive.csv", sep = ",", row.names = F)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

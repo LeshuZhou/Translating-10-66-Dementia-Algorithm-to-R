@@ -1,0 +1,578 @@
+---
+title: "participant"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-04-05"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+simu_background <- read.csv("simu_background.csv")
+```
+
+
+```{r}
+simu_background <- simu_background %>% 
+  arrange(HOUSEID, PARTICID)
+```
+
+# Recode
+```{r}
+simu_background <- simu_background %>%
+  mutate(PDAS1 = case_when(PDAS1 <= 0.4999999 ~ 0,
+                           PDAS1 >= 0.5 & PDAS1 <= 1.499999999 ~ 1,
+                           PDAS1 >= 1.5 & PDAS1 <= 2.499999999 ~ 2,
+                           PDAS1 >= 2.5 & PDAS1 <= 3.4999999999 ~ 3,
+                           PDAS1 >= 3.5 ~ 4),
+         PDAS2 = case_when(PDAS2 <= 0.4999999 ~ 0,
+                           PDAS2 >= 0.5 & PDAS2 <= 1.499999999 ~ 1,
+                           PDAS2 >= 1.5 & PDAS2 <= 2.499999999 ~ 2,
+                           PDAS2 >= 2.5 & PDAS2 <= 3.4999999999 ~ 3,
+                           PDAS2 >= 3.5 ~ 4),
+         PDAS3 = case_when(PDAS3 <= 0.4999999 ~ 0,
+                           PDAS3 >= 0.5 & PDAS3 <= 1.499999999 ~ 1,
+                           PDAS3 >= 1.5 & PDAS3 <= 2.499999999 ~ 2,
+                           PDAS3 >= 2.5 & PDAS3 <= 3.4999999999 ~ 3,
+                           PDAS3 >= 3.5 ~ 4),
+         PDAS4 = case_when(PDAS4 <= 0.4999999 ~ 0,
+                           PDAS4 >= 0.5 & PDAS4 <= 1.499999999 ~ 1,
+                           PDAS4 >= 1.5 & PDAS4 <= 2.499999999 ~ 2,
+                           PDAS4 >= 2.5 & PDAS4 <= 3.4999999999 ~ 3,
+                           PDAS4 >= 3.5 ~ 4),
+         PDAS5 = case_when(PDAS5 <= 0.4999999 ~ 0,
+                           PDAS5 >= 0.5 & PDAS5 <= 1.499999999 ~ 1,
+                           PDAS5 >= 1.5 & PDAS5 <= 2.499999999 ~ 2,
+                           PDAS5 >= 2.5 & PDAS5 <= 3.4999999999 ~ 3,
+                           PDAS5 >= 3.5 ~ 4),
+         PDAS6 = case_when(PDAS6 <= 0.4999999 ~ 0,
+                           PDAS6 >= 0.5 & PDAS6 <= 1.499999999 ~ 1,
+                           PDAS6 >= 1.5 & PDAS6 <= 2.499999999 ~ 2,
+                           PDAS6 >= 2.5 & PDAS6 <= 3.4999999999 ~ 3,
+                           PDAS6 >= 3.5 ~ 4),
+         PDAS7 = case_when(PDAS7 <= 0.4999999 ~ 0,
+                           PDAS7 >= 0.5 & PDAS7 <= 1.499999999 ~ 1,
+                           PDAS7 >= 1.5 & PDAS7 <= 2.499999999 ~ 2,
+                           PDAS7 >= 2.5 & PDAS7 <= 3.4999999999 ~ 3,
+                           PDAS7 >= 3.5 ~ 4),
+         PDAS8 = case_when(PDAS8 <= 0.4999999 ~ 0,
+                           PDAS8 >= 0.5 & PDAS8 <= 1.499999999 ~ 1,
+                           PDAS8 >= 1.5 & PDAS8 <= 2.499999999 ~ 2,
+                           PDAS8 >= 2.5 & PDAS8 <= 3.4999999999 ~ 3,
+                           PDAS8 >= 3.5 ~ 4),
+         PDAS9 = case_when(PDAS9 <= 0.4999999 ~ 0,
+                           PDAS9 >= 0.5 & PDAS9 <= 1.499999999 ~ 1,
+                           PDAS9 >= 1.5 & PDAS9 <= 2.499999999 ~ 2,
+                           PDAS9 >= 2.5 & PDAS9 <= 3.4999999999 ~ 3,
+                           PDAS9 >= 3.5 ~ 4),
+         PDAS10 = case_when(PDAS10 <= 0.4999999 ~ 0,
+                           PDAS10 >= 0.5 & PDAS10 <= 1.499999999 ~ 1,
+                           PDAS10 >= 1.5 & PDAS10 <= 2.499999999 ~ 2,
+                           PDAS10 >= 2.5 & PDAS10 <= 3.4999999999 ~ 3,
+                           PDAS10 >= 3.5 ~ 4),
+         PDAS11 = case_when(PDAS11 <= 0.4999999 ~ 0,
+                           PDAS11 >= 0.5 & PDAS11 <= 1.499999999 ~ 1,
+                           PDAS11 >= 1.5 & PDAS11 <= 2.499999999 ~ 2,
+                           PDAS11 >= 2.5 & PDAS11 <= 3.4999999999 ~ 3,
+                           PDAS11 >= 3.5 ~ 4),
+         PDAS12 = case_when(PDAS12 <= 0.4999999 ~ 0,
+                           PDAS12 >= 0.5 & PDAS12 <= 1.499999999 ~ 1,
+                           PDAS12 >= 1.5 & PDAS12 <= 2.499999999 ~ 2,
+                           PDAS12 >= 2.5 & PDAS12 <= 3.4999999999 ~ 3,
+                           PDAS12 >= 3.5 ~ 4),)
+    
+    
+    
+
+    
+```    
+    
+
+
+
+# sp1 - sp5 and whodas5
+```{r}
+
+ 
+simu_background <- simu_background %>%     
+  mutate(SP1 = PDAS1,
+    SP2 = case_when(
+    PDAS2 == 0 ~ 0,
+    PDAS2 == 1 ~ 1,
+    PDAS2 == 2 ~ 1,
+    PDAS2 == 3 ~ 2,
+    PDAS2 == 4 ~ 2))
+
+
+simu_background <- simu_background %>%    
+  mutate(SP3 = PDAS3,
+    SP4 = case_when(
+    PDAS4 == 0 ~ 0,
+    PDAS4 == 1 ~ 1,
+    PDAS4 == 2 ~ 1,
+    PDAS4 == 3 ~ 2,
+    PDAS4 == 4 ~ 2),
+    SP5 = PDAS5)
+
+
+
+simu_background <- simu_background %>%    
+  mutate(WHODAS5 = (SP1 + SP2 + SP3 + SP4 + SP5) * 100 / 16)
+
+```
+
+
+# sp6 - sp11 and whodas11
+```{r}
+simu_background <- simu_background %>%     
+  mutate(SP6 = PDAS6,
+         SP7 = PDAS7,
+    SP8 = case_when(
+    PDAS8 == 0 ~ 0,
+    PDAS8 == 1 ~ 1,
+    PDAS8 == 2 ~ 1,
+    PDAS8 == 3 ~ 2,
+    PDAS8 == 4 ~ 2))
+
+
+
+
+simu_background <- simu_background %>%    
+  mutate(SP9 = PDAS9,
+    SP10 = case_when(
+    PDAS10 == 0 ~ 0,
+    PDAS10 == 1 ~ 1,
+    PDAS10 == 2 ~ 1,
+    PDAS10 == 3 ~ 2,
+    PDAS10 == 4 ~ 2))
+
+
+simu_background <- simu_background %>%    
+  mutate(SP11 = case_when(
+    PDAS11 == 0 ~ 0,
+    PDAS11 == 1 ~ 1,
+    PDAS11 == 2 ~ 1,
+    PDAS11 == 3 ~ 2,
+    PDAS11 == 4 ~ 2
+  )) %>%
+  mutate(WHODAS11 = (SP1 + SP2 + SP3 + SP4 + SP5 + SP6 + SP7 + SP8 + SP9 + SP10 + SP11) *100 / 34)
+
+```
+
+
+# sp12 and whodas12
+```{r}
+simu_background <- simu_background %>%     
+  mutate(SP12 = case_when(
+    PDAS12 == 0 ~ 0,
+    PDAS12 == 1 ~ 1,
+    PDAS12 == 2 ~ 1,
+    PDAS12 == 3 ~ 2,
+    PDAS12 == 4 ~ 2,
+  )) %>%
+  mutate(WHODAS12 = (SP1 + SP2 + SP3 + SP4 + SP5 + SP6 + SP7 + SP8 + SP9 + SP10 + SP11 + SP12) * 100 / 36)
+
+
+```
+
+
+
+# pdasall45
+```{r}
+simu_background <- simu_background %>%   
+  mutate(PDASALL4 = ifelse(PDASALL4 == 99, NA, PDASALL4),
+         PDASALL5 = ifelse(PDASALL5 == 99, NA, PDASALL5),
+         WHODASDD = PDASALL4 + (PDASALL5 / 2),
+         DD15PLUS = case_when(WHODASDD <= 14.999999999999 ~ 0,
+                              WHODASDD >= 15 ~ 1))
+
+
+```
+
+
+
+# FD
+```{r}
+simu_background <- simu_background %>%
+  mutate(WENGER = 99,
+         FD1 = ifelse(PRELDIST == 1, 1, 0),
+         FD2 = ifelse(PCHDIST %in% c(1, 2), 1, 0),
+         FD3 = ifelse(PSIBDIST %in% c(1, 2), 1, 0),
+         FD4 = ifelse(PRELFRQ %in% c(1, 2), 1, 0),
+         FD5 = ifelse(PFRDFRQ %in% c(4, 5), 1, 0),
+         FD6 = ifelse(PNEIFRQ %in% c(0, 4, 5), 1, 0),
+         FD7 = ifelse(PGOCHCH == 2, 1, 0),
+         FD8 = ifelse(PCLUBS %in% c(0, 2), 1, 0))
+
+
+
+```
+
+
+# LI
+```{r}
+simu_background <- simu_background %>%
+  mutate(LI1 = ifelse(PRELDIST %in% c(2, 3), 1, 0),
+         LI2 = ifelse(PCHDIST %in% c(1, 2, 3), 1, 0),
+         LI3 = ifelse(PSIBDIST %in% c(1, 2, 3), 1, 0),
+         LI4 = ifelse(PRELFRQ %in% c(1, 2), 1, 0),
+         LI5 = ifelse(PFRDFRQ %in% c(1, 2, 3), 1, 0),
+         LI6 = ifelse(PNEIFRQ %in% c(1, 2, 3), 1, 0),
+         LI7 = ifelse(PGOCHCH == 1, 1, 0),
+         LI8 = ifelse(PCLUBS == 1, 1, 0))
+
+```
+
+
+
+# LSC
+```{r}
+simu_background <- simu_background %>%
+  mutate(LSC1 = ifelse(PRELDIST %in% c(3, 4), 1, 0),
+         LSC2 = ifelse(PCHDIST %in% c(0, 3, 4), 1, 0),
+         LSC3 = ifelse(PSIBDIST %in% c(4, 2, 3), 1, 0),
+         LSC4 = ifelse(PRELFRQ %in% c(3, 4), 1, 0),
+         LSC5 = ifelse(PFRDFRQ %in% c(4, 5), 1, 0),
+         LSC6 = ifelse(PNEIFRQ %in% c(3, 4), 1, 0),
+         LSC7 = ifelse(PGOCHCH %in% c(0, 2), 1, 0),
+         LSC8 = ifelse(PCLUBS %in% c(0, 2), 1, 0))
+
+```
+
+
+
+
+# WCF
+```{r}
+simu_background <- simu_background %>%
+  mutate(WCF1 = ifelse(PRELDIST %in% c(4, 5), 1, 0),
+         WCF2 = ifelse(PCHDIST == 5, 1, 0),
+         WCF3 = ifelse(PSIBDIST %in% c(0, 5), 1, 0),
+         WCF4 = ifelse(PRELFRQ %in% c(4, 5), 1, 0),
+         WCF5 = ifelse(PFRDFRQ %in% c(1, 2, 3), 1, 0),
+         WCF6 = ifelse(PNEIFRQ %in% c(3, 4), 1, 0),
+         WCF7 = ifelse(PGOCHCH %in% c(1, 2), 1, 0),
+         WCF8 = ifelse(PCLUBS == 1, 1, 0))
+
+```
+
+
+
+# PRIVATE
+```{r}
+simu_background <- simu_background %>%
+  mutate(PRIVATE1 = ifelse(PRELDIST %in% c(4, 5), 1, 0),
+         PRIVATE2 = ifelse(PCHDIST %in% c(0, 5), 1, 0),
+         PRIVATE3 = ifelse(PSIBDIST %in% c(0, 5), 1, 0),
+         PRIVATE4 = ifelse(PRELFRQ %in% c(0, 5), 1, 0),
+         PRIVATE5 = ifelse(PFRDFRQ %in% c(0, 5), 1, 0),
+         PRIVATE6 = ifelse(PNEIFRQ %in% c(0, 5), 1, 0),
+         PRIVATE7 = ifelse(PGOCHCH == 0, 1, 0),
+         PRIVATE8 = ifelse(PCLUBS == 0, 1, 0))
+
+```
+
+
+# all in ones
+```{r}
+simu_background <- simu_background %>%
+  mutate(FD = FD1 + FD2 + FD3 + FD4 + FD5 + FD6 + FD7 + FD8,
+         LI = LI1 + LI2 + LI3 + LI4 + LI5 + LI6 + LI7 + LI8, 
+         LSC = LSC1 + LSC2 + LSC3 + LSC4 + LSC5 + LSC6 + LSC7 + LSC8, 
+         WCF = WCF1 + WCF2 + WCF3 + WCF4 + WCF5 + WCF6 + WCF7 + WCF8, 
+         PRIVATE = PRIVATE1 + PRIVATE2 + PRIVATE3 + PRIVATE4 + PRIVATE5 + PRIVATE6 + PRIVATE7 + PRIVATE8)
+
+
+simu_background <- simu_background %>%
+mutate(WENGER = ifelse(WENGER == 99, NA, WENGER),
+       FD = ifelse(FD == 0, NA, FD),
+       LI = ifelse(LI == 0, NA, LI),
+       LSC = ifelse(LSC == 0, NA, LSC),
+       WCF = ifelse(WCF == 0, NA, WCF),
+       PRIVATE = ifelse(PRIVATE == 0, NA, PRIVATE))
+
+```
+
+
+
+
+# WENGER
+```{r}
+simu_background <- simu_background %>%
+  mutate(WENGER = case_when(
+    pmax(FD, LI, LSC, WCF, PRIVATE, na.rm = TRUE) == FD ~ 1,
+    pmax(FD, LI, LSC, WCF, PRIVATE, na.rm = TRUE) == LI ~ 2,
+    pmax(FD, LI, LSC, WCF, PRIVATE, na.rm = TRUE) == LSC ~ 3,
+    pmax(FD, LI, LSC, WCF, PRIVATE, na.rm = TRUE) == WCF ~ 4,
+    pmax(FD, LI, LSC, WCF, PRIVATE, na.rm = TRUE) == PRIVATE ~ 5))
+
+
+```
+
+
+# WENGER label
+```{r}
+simu_background$WENGER = factor(simu_background$WENGER,
+                    levels = 1:5,
+                    labels = c('family dependent', 'locally integrated', 'locally self-contained', 
+                               'wider community focused', 'PRIVATE'))
+
+```
+
+
+# income 
+```{r}
+simu_background <- simu_background %>%
+  mutate(BEN1 = ifelse(BEN1 %in% c(NA, 999, 9999, 99999), 0, BEN1),
+         BEN2 = ifelse(BEN2 %in% c(NA, 999, 9999, 99999), 0, BEN2),
+         BEN3 = ifelse(BEN3 %in% c(NA, 999, 9999, 99999), 0, BEN3),
+         BEN4 = ifelse(BEN4 %in% c(NA, 999, 9999, 99999), 0, BEN4))
+```
+
+
+
+
+```{r}
+simu_background <- simu_background %>%
+  mutate(P_FAMILY = case_when(
+      BENTYPE1 == 4 ~ BEN1,
+      BENTYPE2 == 4 ~ BEN2,
+      BENTYPE3 == 4 ~ BEN3,
+      BENTYPE4 == 4 ~ BEN4,
+    ))
+
+
+simu_background <- simu_background %>%
+  mutate(
+    P_GOV = case_when(
+      BENTYPE1 == 1 ~ BEN1,
+      BENTYPE2 == 1 ~ BEN2,
+      BENTYPE3 == 1 ~ BEN3,
+      BENTYPE4 == 1 ~ BEN4,
+    ))
+
+
+simu_background <- simu_background %>%
+  mutate(
+    P_OCCUP = case_when(
+      BENTYPE1 == 2 ~ BEN1,
+      BENTYPE2 == 2 ~ BEN2,
+      BENTYPE3 == 2 ~ BEN3,
+      BENTYPE4 == 2 ~ BEN4,
+    ))
+
+
+simu_background <- simu_background %>%
+  mutate(
+    P_DISAB = case_when(
+      BENTYPE1 == 3 ~ BEN1,
+      BENTYPE2 == 3 ~ BEN2,
+      BENTYPE3 == 3 ~ BEN3,
+      BENTYPE4 == 3 ~ BEN4,
+    ))
+
+
+simu_background <- simu_background %>%
+  mutate(
+    P_RENT = case_when(
+      BENTYPE1 == 5 ~ BEN1,
+      BENTYPE2 == 5 ~ BEN2,
+      BENTYPE3 == 5 ~ BEN3,
+      BENTYPE4 == 5 ~ BEN4,
+    ))
+
+
+simu_background <- simu_background %>%
+  mutate(
+    P_WORK = case_when(
+      BENTYPE1 == 6 ~ BEN1,
+      BENTYPE2 == 6 ~ BEN2,
+      BENTYPE3 == 6 ~ BEN3,
+      BENTYPE4 == 6 ~ BEN4,
+    ))
+
+
+simu_background <- simu_background %>%
+  mutate(
+    P_CARE = case_when(
+      BENTYPE1 == 7 ~ BEN1,
+      BENTYPE2 == 7 ~ BEN2,
+      BENTYPE3 == 7 ~ BEN3,
+      BENTYPE4 == 7 ~ BEN4,
+    ))
+
+
+simu_background <- simu_background %>%
+  mutate(
+    P_OTH = case_when(
+      BENTYPE1 == 8 ~ BEN1,
+      BENTYPE2 == 8 ~ BEN2,
+      BENTYPE3 == 8 ~ BEN3,
+      BENTYPE4 == 8 ~ BEN4,
+    ))
+```
+
+
+# make NAs to 0
+```{r}
+simu_background <- simu_background %>%
+  mutate(P_FAMILY = ifelse(is.na(P_FAMILY), 0, P_FAMILY),
+         P_GOV = ifelse(is.na(P_GOV), 0, P_GOV),
+         P_OCCUP = ifelse(is.na(P_OCCUP), 0, P_OCCUP),
+         P_DISAB = ifelse(is.na(P_DISAB), 0, P_DISAB),
+         P_RENT = ifelse(is.na(P_RENT), 0, P_RENT),
+         P_WORK = ifelse(is.na(P_WORK), 0, P_WORK),
+         P_CARE = ifelse(is.na(P_CARE), 0, P_CARE),
+         P_OTH = ifelse(is.na(P_OTH), 0, P_OTH))
+
+```
+
+
+# pnof_tot and p_tot
+```{r}
+simu_background <- simu_background %>%
+  mutate(PNOF_TOT = P_GOV + P_OCCUP + P_DISAB + P_RENT + P_WORK + P_CARE + P_OTH, 
+         P_TOT = PNOF_TOT + P_FAMILY)
+
+
+```
+
+
+# NUMBER OF ILLNESSES/ IMPAIRMENTS
+```{r}
+simu_background$ILLNO <- rowSums(
+  simu_background[, c("PARTH", "PEYE", "PEAR", "PCOUGH", "PRESP", "PBP", "PHEAR", "PGUT", "PFAINT", "PLIMB", "PSKIN")] == 2 |    simu_background[, c("PARTH", "PEYE", "PEAR", "PCOUGH", "PRESP", "PBP", "PHEAR", "PGUT", "PFAINT", "PLIMB", "PSKIN")] == 3, 
+  na.rm = T)
+
+
+```
+
+
+
+# CHICAGO PAIN SCALE
+```{r}
+simu_background <- simu_background %>%
+  mutate(PPAIN1 = ifelse(is.na(PPAIN1), 0, PPAIN1),
+         PPAIN2 = ifelse(is.na(PPAIN2), 0, PPAIN2),
+         PPAIN3 = ifelse(is.na(PPAIN3), 0, PPAIN3),
+         PAIN = PPAIN1 + PPAIN2 + PPAIN3,
+         REPYEARS = PMENPAUS - PMENARC)
+```
+
+
+# recode HEALTH CARE COSTS
+```{r}
+costs_var <- c("PPC", "PPCCARE", "PPCTRMIN", "PPCTRCST", "PPCMINS", "PPCCOST", "PPCVIS",
+                "PHOSP", "PHPCARE", "PHPTRMIN", "PHPTRCST", "PHPMINS", "PHPCOST", "PHPVIS",
+                "POTH", "POTCARE", "POTTRMIN", "POTTRCST", "POTMINS", "POTCOST", "POTVIS",
+                "PPD", "PPDCARE", "PPDTRMIN", "PPDTRCST", "PPDMINS", "PPDCOST", "PPDVIS",
+                "PTH", "PTHCARE", "PTHTRMIN", "PTHTRCST", "PTHMINS", "PTHCOST", "PTHVIS",
+                "PHOSAD", "PHOSDAY", "PHOSCOST", "PMEDS", "PMEDCOST", "PDENT", "PDENTRMI", "PDENTRCT",
+                "PDENMINS", "PDENCOST", "PDENVIS", "PDENCARE")
+
+simu_background <- simu_background %>%
+  mutate(across(all_of(costs_var), ~ ifelse(. %in% c(NA, 999, 9999, 99999), 0, .)))
+```
+
+
+# COST
+```{r}
+simu_background <- simu_background %>%
+  mutate(PC_COST = (PPCTRCST + PPCCOST) * PPCVIS, 
+         HOS_COST = (PHPTRCST + PHPCOST) * PHPVIS,
+         OTH_COST = (POTTRCST + POTCOST) * POTVIS,
+         PD_COST = (PPDCOST + PPDTRCST) * PPDVIS,
+         DEN_COST = (PDENCOST + PDENTRCT) * PDENVIS,
+         TH_COST = (PTHCOST + PTHTRCST) * PTHVIS,
+         HTH_COST = OTH_COST + PC_COST + HOS_COST + PD_COST + TH_COST + DEN_COST + PHOSCOST + PMEDCOST)
+
+
+```
+
+
+
+# alcohol
+```{r}
+simu_background <- simu_background %>%
+  mutate(HALCPAST = PALCPAST,
+         HALCNOW = PALCNOW)
+
+
+```
+
+
+
+# if
+```{r}
+simu_background <- simu_background %>%
+  mutate(HALCPAST = case_when(
+    PSEXRE == 1 & HALCPAST >= 21 ~ 1,
+    PSEXRE == 1 & HALCPAST <= 20 ~ 0,
+    PSEXRE == 2 & HALCPAST >= 28 ~ 1,
+    PSEXRE == 2 & HALCPAST <= 27 ~ 0,
+    TRUE ~ NA)) %>%
+  mutate(HALCNOW = case_when(
+    PSEXRE == 1 & HALCNOW >= 21 ~ 1,
+    PSEXRE == 1 & HALCNOW <= 20 ~ 0,
+    PSEXRE == 2 & HALCNOW >= 28 ~ 1,
+    PSEXRE == 2 & HALCNOW <= 27 ~ 0,
+    TRUE ~ NA))
+```
+
+
+
+# recode
+```{r}
+var <- c("PREAD", "PWRITE", "PMARRY", "PJOB", "PTOLDBP", "PTOLDHRT", "PCVA", "PCVADIAG", "PTIA",
+         "PTOLDDM", "PMAL", "PTB", "PCYST", "PFHDEM", "PHEAVY", "PALCTRT", "PMEATFRQ",
+         "PFISHFRQ", "PHUNGER", "PACTIVE", "PPC", "PHOSP", "POTH", "PPD", "PDENT", "PTH", "PHOSAD",
+         "PINSURA", "PINSCOVE", "WENGER")
+
+simu_background <- simu_background %>%
+  mutate(across(all_of(var), ~ ifelse(. == 9, NA, .)))
+
+
+```
+
+
+# recode
+```{r}
+simu_background <- simu_background %>%
+  mutate( PALCPAST = ifelse(PALCPAST == 999, NA, PALCPAST),
+          PALCNOW = ifelse(PALCPAST == 999, NA, PALCNOW),
+          PVEGS = ifelse(PVEGS == 99, NA, PVEGS),
+          PWALKOFT = ifelse(PWALKOFT == 99, NA, PWALKOFT),
+          PSMOKE = ifelse(PSMOKE == 9, NA, PSMOKE),
+          PSMKNOW = ifelse(PSMKNOW == 9, NA, PSMKNOW),
+          PSTART = ifelse(PSTART == 999, NA, PSTART),
+          PSTOP = ifelse(PSTOP == 999, NA, PSTOP),
+          PCIGDOSE = ifelse(PCIGDOSE == 999, NA, PCIGDOSE),
+          PCIGDOSE = ifelse(PCIGDOSE >= 61, 60, PCIGDOSE))
+
+
+```
+
+
+# outcome
+```{r}
+# simu_background <- simu_background %>% 
+ # select(-c("FD1", "FD2", "FD3", "FD4", "FD5", "FD6", "FD7", "FD8", 
+  #          "LI1", "LI2", "LI3", "LI4", "LI5", "LI6", "LI7", "LI8", 
+  #          "LSC1", "LSC2", "LSC3", "LSC4", "LSC5", "LSC6", "LSC7", "LSC8", 
+   #         "WCF1", "WCF2", "WCF3", "WCF4", "WCF5", "WCF6", "WCF7", "WCF8", 
+    #        "PRIVATE1", "PRIVATE2", "PRIVATE3", "PRIVATE4", "PRIVATE5", "PRIVATE6", "PRIVATE7", "PRIVATE8", 
+    #        "FD", "LI", "LSC", "WCF", "PRIVATE", 
+     #       "SP1", "SP2", "SP3", "SP4", "SP5", "SP6", "SP7", "SP8", "SP9", "SP10", "SP11", "SP12"))
+
+write.table(simu_background, file = "simuR_background.csv", sep = ",", row.names = F)
+
+
+```
+
+
+
+
+
+

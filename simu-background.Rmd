@@ -1,0 +1,524 @@
+---
+title: "background simu-data"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-07-23"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+n = 1000
+set.seed(1105)
+start_date <- as.Date("1990-01-01")
+end_date <- as.Date("2020-12-31")
+date_sequence <- seq(from = start_date, to = end_date, by = "day")
+DATE <- sample(date_sequence, n, replace = T)
+INTERID <- sample(10 : 9999, n, replace = F)
+HOUSEID <- sample(n : 9999, n, replace = F)
+PARTICID <- sample(1 : 9999, n, replace = F)
+PINTER <- sample(c(1, 0), n, replace = T)
+PLIVED <- sample(0 : 80, n, replace = T)
+PBORN <- sample(c(1, 0, 2), n, replace = T)
+PMIDLIFE <- sample(c(1, 0, 2), n, replace = T)
+PLATLIFE <- sample(c(1, 0, 2), n, replace = T)
+PEDUC <- sample(c(1, 2, 3, 4, 5, 9), n, replace = T)
+PREAD <- sample(c(1, 0), n, replace = T)
+PWRITE <- sample(c(1, 0), n, replace = T)
+PHEADHSE <- sample(c(1, 0), n, replace = T)  # if == 0 skip to PMARRY
+PREL <- sample(c(1, 2, 3, 4, 5, 6), n, replace = T)
+PMARRY <- sample(c(1, 2, 3, 4), n, replace = T)
+PRELIG <- sample(c(1, 2, 3, 4, 5, 6, 7, 8), n, replace = T)
+PGOCHCH <- sample(c(1, 0, 2), n, replace = T)
+PCLUBS <- sample(c(1, 0, 2), n, replace = T)
+PRELDIST <- sample(c(1, 2, 3, 4, 5), n, replace = T)
+PSIBDIST <- sample(c(1, 2, 3, 4, 5), n, replace = T)
+PCH <- sample(c(1, 0), n, replace = T)   # if == 0 skip to PFRD
+PCHDIST <- sample(c(1, 2, 3, 4, 5), n, replace = T)
+PRELFRQ <- sample(c(1, 2, 3, 4, 5), n, replace = T)
+PFRD <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PNEIFRQ
+PFRDFRQ <- sample(c(1, 2, 3, 4, 5), n, replace = T)
+PFRDNUM <- sample(LETTERS, n, replace = TRUE)   ### discuss
+PFRDSAT <- sample(c(1, 0), n, replace = T)
+PNEIFRQ <- sample(c(1, 2, 3, 4, 5), n, replace = T)
+PNEINUM <- sample(LETTERS, n, replace = TRUE)    ### discuss
+PJOB <- sample(c(1, 2, 3, 4, 5, 6), n, replace = T)
+PJOBCAT <- sample(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 99), n, replace = T)
+PCJOBCAT <- sample(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 99), n, replace = T)
+PINCOME <- sample(c(1, 0), n, replace = T)      # if == 0 skip to PTOLDBP
+BENTYPE1 <- sample(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 9999), n, replace = T)
+BEN1 <- sample(c(n : 12000), n, replace = T)
+BENTYPE2 <- sample(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 9999), n, replace = T)
+BEN2 <- sample(c(n : 12000), n, replace = T)
+BENTYPE3 <- sample(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 9999), n, replace = T)
+BEN3 <- sample(c(n : 12000), n, replace = T)
+BENTYPE4 <- sample(c(1, 2, 3, 4, 5, 6, 7, 8, 9, 9999), n, replace = T)
+BEN4 <- sample(c(n : 12000), n, replace = T)
+PTOLDBP <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PTOLDHRT
+PBPYEAR <- sample(c(1, 2, 3), n, replace = T)
+PBPTREAT <- sample(c(1, 0), n, replace = T)
+PBPCON <- sample(c(1, 0), n, replace = T)
+PTOLDHRT <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PCVA
+PHRTYEAR <- sample(c(1, 2, 3), n, replace = T)
+PHRTWHAT <- sample(c(1, 2, 3, 4, 5), n, replace = T)
+PCVA <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PTIA
+PCVADIAG <- sample(c(1, 0, 2), n, replace = T)
+PTIA <- sample(c(1, 0), n, replace = T)
+PLOC <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PTOLDDM
+PLOCHRS <- round(runif(n, min = 0.1, max = 24), 1)   # hours
+LOCMINS <- PLOCHRS * 60          # mins
+PLOCAGE <- sample(18:80, n, replace = T)
+PTOLDDM <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PCOAD
+PDMTRT <- sample(c(1, 2, 3, 4), n, replace = T)
+PCOAD <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PMAL
+PCOAD1 <- sample(c(1, 2), n, replace = T)
+PMAL <- sample(c(1, 0, 2), n, replace = T)
+PTB <- sample(c(1, 0, 2), n, replace = T)
+PCYST <- sample(c(1, 0, 2), n, replace = T)
+PPASTHX <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PFHDEM
+PONSDEP <- sample(18:80, n, replace = T)
+PDOCRX <- sample(c(1, 0), n, replace = T)
+PADMIT <- sample(c(1, 0), n, replace = T)
+PFHDEM <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PARTH
+PFATHER <- sample(c(1, 0), n, replace = T)
+PFATHAGE <- sample(18:80, n, replace = T)
+PMOTHER <- sample(c(1, 0), n, replace = T)
+PMOTHAGE <- sample(18:80, n, replace = T)
+PSIB1 <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PARTH
+PSIBAGE1 <- sample(18:80, n, replace = T)
+PSIB2 <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PARTH
+PSIBAGE2 <- sample(18:80, n, replace = T)
+PSIB3 <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PARTH
+PSIBAGE3 <- sample(18:80, n, replace = T)
+PSIB4 <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PARTH
+PSIBAGE4 <- sample(18:80, n, replace = T)
+PARTH <- sample(c(1, 2, 3, 0), n, replace = T)
+PEYE <- sample(c(1, 2, 3, 0), n, replace = T)
+PEAR <- sample(c(1, 2, 3, 0), n, replace = T)
+PCOUGH <- sample(c(1, 2, 3, 0), n, replace = T)
+PRESP <- sample(c(1, 2, 3, 0), n, replace = T)
+PBP <- sample(c(1, 2, 3, 0), n, replace = T)
+PHEAR <- sample(c(1, 2, 3, 0), n, replace = T)
+PGUT <- sample(c(1, 2, 3, 0), n, replace = T)
+PFAINT <- sample(c(1, 2, 3, 0), n, replace = T)
+PLIMB <- sample(c(1, 2, 3, 0), n, replace = T)
+PSKIN <- sample(c(1, 2, 3, 0), n, replace = T)
+PPAIN1 <- sample(c(1, 2, 3, 4, 5), n, replace = T)    # if == 1 skip to PDASALL1
+PPAIN2 <- sample(c(1, 2, 3, 4, 5), n, replace = T)
+PPAIN3 <- sample(c(1, 2, 3, 4), n, replace = T)
+PDASALL1 <- sample(c(1, 2, 3, 4), n, replace = T)
+PDAS1 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS2 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS3 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS4 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS5 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS6 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS7 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS8 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS9 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS10 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS11 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDAS12 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDASALL2 <- sample(c(0, 1, 2, 3, 4), n, replace = T)
+PDASALL3 <- sample(c(0 : 30, 99), n, replace = T)
+PDASALL4 <- sample(c(0 : 30, 99), n, replace = T)
+PDASALL5 <- sample(c(0 : 30, 99), n, replace = T)
+PSEXRE <- sample(c(1, 2), n, replace = T)    # if == 2 skip to PSMOKE
+PMENARC <- sample(10 : 15, n, replace = T)
+PCHINO <- sample(0 : 5, n, replace = T)
+PCHIAGE <- sample(20 : 35, n, replace = T)
+PMENPAUS <- sample(35 : 50, n, replace = T)
+PSMOKE <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PALCPAST
+PSMOKE2 <- sample(0:5, n, replace = T)
+PSTART <- sample(18:40, n, replace = T)
+PSMKNOW <- sample(c(1, 0), n, replace = T)    # if == 1 skip to PCIGDOSE
+PSTOP <- sample(18:80, n, replace = T)
+PCIGDOSE <- sample(c(0:60, 99), n, replace = T)
+PALCPAST <- sample(c(0, 1, 32, 99), n, replace = T)        ###12.2.1   
+PALCNOW <- sample(c(0, 1, 32, 99), n, replace = T)          ###12.2.2 if both == 0 skip to PMEATFRQ
+PHEAVY <- sample(c(1, 0), n, replace = T)
+PALCTRT <- sample(c(1, 0), n, replace = T)
+PMEATFRQ <- sample(c(1, 0, 2, 3), n, replace = T)
+PFISHFRQ <- sample(c(1, 0, 2, 3), n, replace = T)
+PVEGS <- sample(c(0:9, 99), n, replace = T)
+PHUNGER <- sample(c(1, 0, 2, 3), n, replace = T)
+PACTIVE <- sample(1:4, n, replace = T)
+PWALKANY <- sample(c(1, 0), n, replace = T)
+PWALKOFT <- sample(c(0:30, 99), n, replace = T)
+PPASTEX <- sample(c(1, 2, 3), n, replace = T)
+PPC <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PHOSP
+PPCCARE <- sample(c(1, 0), n, replace = T)
+PPCTRMIN <- sample(c(10:360, 9999), n, replace = T)
+PPCTRCST <- sample(c(10:500, 9999), n, replace = T)
+PPCMINS <- sample(c(30:120, 999), n, replace = T)
+PPCCOST <- sample(c(n:10000, 99999), n, replace = T)
+PPCVIS <- sample(c(1:30, 99), n, replace = T)
+PHOSP <- sample(c(1, 0), n, replace = T)    # if == 0 skip to POTH
+PHPCARE <- sample(c(1, 0), n, replace = T)
+PHPTRMIN <- sample(c(10:360, 9999), n, replace = T)
+PHPTRCST <- sample(c(10:500, 9999), n, replace = T)
+PHPMINS <- sample(c(30:120, 999), n, replace = T)
+PHPCOST <- sample(c(n:10000, 99999), n, replace = T)
+PHPVIS <- sample(c(1:30, 99), n, replace = T)
+POTH <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PPD
+POTCARE <- sample(c(1, 0), n, replace = T)
+POTTRMIN <- sample(c(10:360, 9999), n, replace = T)
+POTTRCST <- sample(c(10:500, 9999), n, replace = T)
+POTMINS <- sample(c(30:120, 999), n, replace = T)
+POTCOST <- sample(c(n:10000, 99999), n, replace = T)
+POTVIS <- sample(c(1:30, 99), n, replace = T)
+PPD <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PDENT
+PPDCARE <- sample(c(1, 0), n, replace = T)
+PPDTRMIN <- sample(c(10:360, 9999), n, replace = T)
+PPDTRCST <- sample(c(10:500, 99999), n, replace = T)
+PPDMINS <- sample(c(30:120, 999), n, replace = T)
+PPDCOST <- sample(c(n:10000, 99999), n, replace = T)
+PPDVIS <- sample(c(1:30, 99), n, replace = T)
+PDENT <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PTH
+PDENCARE <- sample(c(1, 0), n, replace = T)
+PDENTRMI <- sample(c(10:360, 9999), n, replace = T)
+PDENTRCT <- sample(c(10:500, 99999), n, replace = T)
+PDENMINS <- sample(c(30:120, 999), n, replace = T)
+PDENCOST <- sample(c(n:10000, 99999), n, replace = T)
+PDENVIS <- sample(c(1:30, 99), n, replace = T)
+PTH <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PHOSAD
+PTHCARE <- sample(c(1, 0), n, replace = T)
+PTHTRMIN <- sample(c(10:360, 9999), n, replace = T)
+PTHTRCST <- sample(c(10:500, 99999), n, replace = T)
+PTHMINS <- sample(c(30:120, 999), n, replace = T)
+PTHCOST <- sample(c(n:10000, 99999), n, replace = T)
+PTHVIS <- sample(c(1:30, 99), n, replace = T)
+PHOSAD <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PMEDS
+PHOSDAY <- sample(c(1:90, 99), n, replace = T)
+PHOSCOST <- sample(c(100:10000, 99999), n, replace = T)
+PMEDS <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PMEDS
+PMEDCOST <- sample(c(100:10000, 99999), n, replace = T)
+PINSURA <- sample(c(1, 0), n, replace = T)    # if == 0 skip to PRFRATE
+PINSCOVE <- sample(c(1, 2), n, replace = T)
+PINSCOST <- sample(200:700, n, replace = T)
+PRFRATE <- sample(c(1, 0, 2, 3, 4), n, replace = T)
+```
+
+```{r}
+simu_background <- data.frame(DATE, INTERID, HOUSEID, PARTICID, PINTER, PLIVED, PBORN, PMIDLIFE, PLATLIFE, PEDUC, PREAD, PWRITE, PHEADHSE, PREL, PMARRY, PRELIG, PGOCHCH, PCLUBS, PRELDIST, PSIBDIST, PCH, PCHDIST, PRELFRQ, PFRD, PFRDFRQ, PFRDNUM, PFRDSAT, PNEIFRQ, PNEINUM, PJOB, PJOBCAT, PCJOBCAT,PINCOME, BENTYPE1, BEN1, BENTYPE2, BEN2, BENTYPE3, BEN3, BENTYPE4, BEN4, PTOLDBP, PBPYEAR, PBPTREAT, PBPCON, PTOLDHRT, PHRTYEAR, PHRTWHAT, PCVA, PCVADIAG, PTIA, PLOC, PLOCHRS, LOCMINS, PLOCAGE, PTOLDDM, PDMTRT, PCOAD, PCOAD1, PMAL, PTB, PCYST, PPASTHX, PONSDEP, PDOCRX, PADMIT, PFHDEM, PFATHER, PFATHAGE, PMOTHER, PMOTHAGE, PSIB1, PSIBAGE1, PSIB2, PSIBAGE2, PSIB3, PSIBAGE3, PSIB4, PSIBAGE4, PARTH, PEYE, PEAR, PCOUGH, PRESP, PBP, PHEAR, PGUT, PFAINT, PLIMB, PSKIN, PPAIN1, PPAIN2, PPAIN3, PDASALL1, PDAS1, PDAS2, PDAS3, PDAS4, PDAS5, PDAS6, PDAS7, PDAS8, PDAS9, PDAS10, PDAS11, PDAS12, PDASALL2, PDASALL3, PDASALL4, PDASALL5, PSEXRE, PMENARC, PCHINO, PCHIAGE, PMENPAUS, PSMOKE, PSMOKE2, PSTART, PSMKNOW, PSTOP, PCIGDOSE, PALCPAST, PALCNOW, PHEAVY, PALCTRT, PMEATFRQ, PFISHFRQ, PVEGS, PHUNGER, PACTIVE, PWALKANY, PWALKOFT, PPASTEX, PPC, PPCCARE, PPCTRMIN, PPCTRCST, PPCMINS, PPCCOST, PPCVIS, PHOSP, PHPCARE, PHPTRMIN, PHPTRCST, PHPMINS, PHPCOST, PHPVIS, POTH, POTCARE, POTTRMIN, POTTRCST, POTMINS, POTCOST, POTVIS, PPD, PPDCARE, PPDTRMIN, PPDTRCST, PPDMINS, PPDCOST, PPDVIS, PDENT, PDENCARE, PDENTRMI, PDENTRCT, PDENMINS, PDENCOST, PDENVIS, PTH, PTHCARE, PTHTRMIN, PTHTRCST, PTHMINS, PTHCOST, PTHVIS, PHOSAD, PHOSDAY, PHOSCOST, PMEDS, PMEDCOST, PINSURA, PINSCOVE, PINSCOST, PRFRATE)
+
+
+```
+
+```{r}
+simu_background <- simu_background %>%
+  mutate(PREL = ifelse(PHEADHSE == 0, "", PREL),
+         PCHDIST = ifelse(PCH == 0, "", PCHDIST),
+         PRELFRQ = ifelse(PCH == 0, "", PRELFRQ),
+         PFRDFRQ = ifelse(PFRD == 0, "", PFRDFRQ),
+         PFRDNUM = ifelse(PFRD == 0, "", PFRDNUM),
+         PFRDSAT = ifelse(PFRD == 0, "", PFRDSAT),
+         BENTYPE1 = ifelse(PINCOME == 0, "", BENTYPE1),
+         BEN1 = ifelse(PINCOME == 0, "", BEN1),
+         BENTYPE2 = ifelse(PINCOME == 0, "", BENTYPE2),
+         BEN2 = ifelse(PINCOME == 0, "", BEN2),
+         BENTYPE3 = ifelse(PINCOME == 0, "", BENTYPE3),
+         BEN3 = ifelse(PINCOME == 0, "", BEN3),
+         BENTYPE4 = ifelse(PINCOME == 0, "", BENTYPE4),
+         BEN4 = ifelse(PINCOME == 0, "", BEN4),
+         PBPYEAR = ifelse(PTOLDBP == 0, "", PBPYEAR),
+         PBPTREAT = ifelse(PTOLDBP == 0, "", PBPTREAT),
+         PBPCON = ifelse(PTOLDBP == 0, "", PBPCON),
+         PHRTYEAR = ifelse(PTOLDHRT == 0, "", PHRTYEAR),
+         PHRTWHAT = ifelse(PTOLDHRT == 0, "", PHRTWHAT),
+         PCVADIAG = ifelse(PCVA == 0 ,"", PCVADIAG),
+         PLOCHRS = ifelse(PLOC == 0 ,"", PLOCHRS),
+         LOCMINS = ifelse(PLOC == 0 ,"", LOCMINS),
+         PLOCAGE = ifelse(PLOC == 0 ,"", PLOCAGE),
+         PDMTRT = ifelse(PTOLDDM == 0 ,"", PDMTRT),
+         PCOAD1 = ifelse(PCOAD == 0, "", PCOAD1),
+         PONSDEP = ifelse(PPASTHX == 0, "", PONSDEP),
+         PDOCRX = ifelse(PPASTHX == 0, "", PDOCRX),
+         PADMIT = ifelse(PPASTHX == 0, "", PADMIT),
+         PFATHER = ifelse(PFHDEM == 0, "", PFATHER),
+         PFATHAGE = ifelse(PFHDEM == 0 | PFATHER == 0, "", PFATHAGE),   ###
+         PMOTHER = ifelse(PFHDEM == 0, "", PMOTHER),
+         PMOTHAGE = ifelse(PFHDEM == 0 | PMOTHER == 0, "", PMOTHAGE),   ### 
+         PSIB1 = ifelse(PFHDEM == 0, "", PSIB1),
+         PSIBAGE1 = ifelse(PFHDEM == 0 | PSIB1 == 0, "", PSIBAGE1),     ###
+         PSIB2 = ifelse(PFHDEM == 0, "", PSIB2),
+         PSIBAGE2 = ifelse(PFHDEM == 0 | PSIB2 == 0, "", PSIBAGE2),     ### 
+         PSIB3 = ifelse(PFHDEM == 0, "", PSIB3),
+         PSIBAGE3 = ifelse(PFHDEM == 0 | PSIB3 == 0, "", PSIBAGE3),     ###
+         PSIB4 = ifelse(PFHDEM == 0, "", PSIB4),
+         PSIBAGE4 = ifelse(PFHDEM == 0 | PSIB4 == 0, "", PSIBAGE4),
+         PPAIN2 = ifelse(PPAIN1 == 1, "", PPAIN2),
+         PPAIN3 = ifelse(PPAIN1 == 1, "", PPAIN3),
+         PMENARC = ifelse(PSEXRE == 2, "", PMENARC),
+         PCHINO = ifelse(PSEXRE == 2, "", PCHINO),
+         PCHIAGE = ifelse(PSEXRE == 2, "", PCHIAGE),
+         PMENPAUS = ifelse(PSEXRE == 2, "", PMENPAUS),
+         PSMOKE2 = ifelse(PSMOKE == 0, "", PSMOKE2),
+         PSTART = ifelse(PSMOKE == 0, "", PSTART),
+         PSTOP = ifelse(PSMKNOW == 1, "", PSTOP),
+         PHEAVY = ifelse(PALCPAST == 0 & PALCNOW == 0, "", PHEAVY),
+         PALCTRT = ifelse(PALCPAST == 0 & PALCNOW == 0, "", PALCTRT),
+         PPCCARE = ifelse(PPC == 0, "", PPCCARE),
+         PPCTRMIN = ifelse(PPC == 0, "", PPCTRMIN),
+         PPCTRCST = ifelse(PPC == 0, "", PPCTRCST),
+         PPCMINS = ifelse(PPC == 0, "", PPCMINS),
+         PPCCOST = ifelse(PPC == 0, "", PPCCOST),
+         PPCVIS = ifelse(PPC == 0, "", PPCVIS),
+         PHPCARE = ifelse(PHOSP == 0, "", PHPCARE),
+         PHPTRMIN = ifelse(PHOSP == 0, "", PHPTRMIN),
+         PHPTRCST = ifelse(PHOSP == 0, "", PHPTRCST),
+         PHPMINS = ifelse(PHOSP == 0, "", PHPMINS),
+         PHPCOST = ifelse(PHOSP == 0, "", PHPCOST),
+         PHPVIS = ifelse(PHOSP == 0, "", PHPVIS),
+         POTCARE = ifelse(POTH == 0, "", POTCARE),
+         POTTRMIN = ifelse(POTH == 0, "", POTTRMIN),
+         POTTRCST = ifelse(POTH == 0, "", POTTRCST),
+         POTMINS = ifelse(POTH == 0, "", POTMINS),
+         POTCOST = ifelse(POTH == 0, "", POTCOST),
+         POTVIS = ifelse(POTH == 0, "", POTVIS),
+         PPDCARE = ifelse(PPD == 0, "", PPDCARE),
+         PPDTRMIN = ifelse(PPD == 0, "", PPDTRMIN),
+         PPDTRCST = ifelse(PPD == 0, "", PPDTRCST),
+         PPDMINS = ifelse(PPD == 0, "", PPDMINS),
+         PPDCOST = ifelse(PPD == 0, "", PPDCOST),
+         PPDVIS = ifelse(PPD == 0, "", PPDVIS),
+         PDENCARE = ifelse(PDENT == 0, "", PDENCARE),
+         PDENTRMI = ifelse(PDENT == 0, "", PDENTRMI),
+         PDENTRCT = ifelse(PDENT == 0, "", PDENTRCT),
+         PDENMINS = ifelse(PDENT == 0, "", PDENMINS),
+         PDENCOST = ifelse(PDENT == 0, "", PDENCOST),
+         PDENVIS = ifelse(PDENT == 0, "", PDENVIS),
+         PTHCARE = ifelse(PTH == 0, "", PTHCARE),
+         PTHTRMIN = ifelse(PTH == 0, "", PTHTRMIN),
+         PTHTRCST = ifelse(PTH == 0, "", PTHTRCST),
+         PTHMINS = ifelse(PTH == 0, "", PTHMINS),
+         PTHCOST = ifelse(PTH == 0, "", PTHCOST),
+         PTHVIS = ifelse(PTH == 0, "", PTHVIS),
+         PHOSDAY = ifelse(PHOSAD == 0, "", PHOSDAY), 
+         PHOSCOST = ifelse(PHOSAD == 0, "", PHOSCOST),
+         PMEDCOST = ifelse(PMEDS == 0, "", PMEDCOST),
+         PINSCOVE = ifelse(PINSURA == 0, "", PINSCOVE),
+         PINSCOST = ifelse(PINSURA == 0, "", PINSCOST))     
+
+
+```
+
+```{r}
+write.table(simu_background, file = "simu_background.csv", sep = ",", row.names = F)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

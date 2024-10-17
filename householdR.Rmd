@@ -1,0 +1,83 @@
+---
+title: "household"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-05-18"
+output: html_document
+---
+```{r}
+library(dplyr)
+library(foreign)
+```
+
+```{r}
+household <- read.csv("simu_household.csv")
+household <- household %>%
+  arrange(HOUSEID, PARTICID)
+```
+
+
+```{r}
+household <- household %>%
+  mutate(AGE = 999,
+         AGEPART = ifelse(is.na(AGEPART), 999, AGEPART),
+         AGEINFO = ifelse(is.na(AGEINFO), 999, AGEINFO),
+         AGEDOC = ifelse(is.na(AGEDOC), 999, AGEDOC),
+         AGEDISC = ifelse(AGEPART == AGEINFO & AGEINFO == AGEDOC, 0, AGEDISC),
+         AGEEXPL = ifelse(AGE1 >= 0, 1, AGEEXPL),
+         AGE = case_when(AGEDISC == 0 & AGEPART != 999 ~ AGEPART,
+                         AGEDISC == 0 & AGEPART == 999 ~ AGEDOC,
+                         AGEEXPL == 1 ~ AGE1,
+                         AGEDISCY == 0 ~ AGEPART,
+                         AGEDISCY == 1 ~ AGE2,
+                         TRUE ~ AGE),
+         AGEMISS = rowSums(across(c(AGEPART, AGEINFO, AGEDOC), ~ . == 999)),
+         AGE = na_if(AGE, 999),
+         AGEGRP = case_when(AGE >= 65 & AGE <= 69 ~ 1,
+                         AGE >= 70 & AGE <= 74 ~ 2,
+                         AGE >= 75 & AGE <= 79 ~ 3,
+                         AGE >= 80 & AGE <= 130 ~ 4,
+                         TRUE ~ AGE),
+         AGEGRP = ifelse(is.na(AGEGRP), 5, AGEGRP),
+         across(c(TV, FRIDGE, WATER, ELEC, PHONE, BATH), ~ na_if(., 9)))
+
+```
+
+
+
+
+```{r}
+write.table(household, file = "householdR_simu.csv", sep = ",", row.names = F)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,253 @@
+---
+title: "cog R"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-04-20"
+output: html_document
+---
+
+
+```{r}
+library(dplyr)
+```
+
+# sorted
+```{r}
+cognitive <- read.csv("simu_cognitive.csv")
+cognitive <- cognitive %>% 
+  arrange(HOUSEID, PARTICID)
+```
+
+# nametot
+```{r}
+cognitive <- cognitive %>%
+  mutate(NAMETOT = case_when(NAME > 0 | NRECALL > 0 ~ 1,
+                             NAME + NRECALL == 0 ~ 0))
+```
+
+# count
+```{r}
+counts <- c("PENCIL", "WATCH", "CHAIR", "SHOES", "KNUCKLE", "ELBOW", "SHOULD", "BRIDGE", "HAMMER", "PRAY",
+            "CHEMIST", "REPEAT", "TOWN", "CHIEF", "STREET", "STORE", "ADDRESS", "LONGMEM", "MONTH", "DAY", 
+            "YEAR", "SEASON", "NOD", "POINT", "CIRCLE", "PENTAG")
+
+cognitive$COUNT <- rowSums(cognitive[counts] == 1)
+
+```
+
+
+# NAs
+```{r}
+cognitive <- cognitive %>%
+  mutate(ANIMALS = ifelse(ANIMALS == 99 | is.na(ANIMALS), 0, ANIMALS),
+         WORDIMM = ifelse(WORDIMM == 9 | is.na(WORDIMM), 0, WORDIMM),
+         WORDDEL = ifelse(WORDDEL == 9 | is.na(WORDDEL), 0, WORDDEL),
+         PAPER = ifelse(PAPER == 9 | is.na(PAPER), 0, PAPER),
+         STORY = ifelse(STORY == 9 | is.na(STORY), 0, STORY),
+         LEARN1 = ifelse(LEARN1 == 99 | is.na(LEARN1), 0, LEARN1),
+         LEARN2 = ifelse(LEARN2 == 99 | is.na(LEARN2), 0, LEARN2),
+         LEARN3 = ifelse(LEARN3 == 99 | is.na(LEARN3), 0, LEARN3), 
+         RECALL = ifelse(RECALL == 99 | is.na(RECALL), 0, RECALL),
+         PENCIL = ifelse(is.na(PENCIL), 0, PENCIL),
+         WATCH = ifelse(is.na(WATCH), 0, WATCH),
+         CHAIR = ifelse(is.na(CHAIR), 0, CHAIR),
+         SHOES = ifelse(is.na(SHOES), 0, SHOES),
+         KNUCKLE = ifelse(is.na(KNUCKLE), 0, KNUCKLE),
+         ELBOW = ifelse(is.na(ELBOW), 0, ELBOW),
+         SHOULD = ifelse(is.na(SHOULD), 0, SHOULD),
+         BRIDGE = ifelse(is.na(BRIDGE), 0, BRIDGE),
+         HAMMER = ifelse(is.na(HAMMER), 0, HAMMER),
+         PRAY = ifelse(is.na(PRAY), 0, PRAY),
+         CHEMIST = ifelse(is.na(CHEMIST), 0, CHEMIST),
+         REPEAT = ifelse(is.na(REPEAT), 0, REPEAT),
+         TOWN = ifelse(is.na(TOWN), 0, TOWN),
+         CHIEF = ifelse(is.na(CHIEF), 0, CHIEF),
+         STREET = ifelse(is.na(STREET), 0, STREET),
+         STORE = ifelse(is.na(STORE), 0, STORE),
+         ADDRESS = ifelse(is.na(ADDRESS), 0, ADDRESS),
+         LONGMEM = ifelse(is.na(LONGMEM), 0, LONGMEM),
+         MONTH = ifelse(is.na(MONTH), 0, MONTH),
+         DAY = ifelse(is.na(DAY), 0, DAY),
+         YEAR = ifelse(is.na(YEAR), 0, YEAR),
+         SEASON = ifelse(is.na(SEASON), 0, SEASON),
+         NOD = ifelse(is.na(NOD), 0, NOD),
+         POINT = ifelse(is.na(POINT), 0, POINT),
+         NAMETOT = ifelse(is.na(NAMETOT), 0, NAMETOT),
+         NRECALL = ifelse(is.na(NRECALL), 0, NRECALL))
+
+
+
+
+
+```
+
+
+
+
+
+```{r}
+cognitive <- cognitive %>%
+  mutate(LEARN1 = case_when(LEARN1 == 11 ~ 1,
+                            LEARN1 <= 21 & LEARN1 >= 20 ~ 2,
+                            LEARN1 <= 31 & LEARN1 >= 30 ~ 3,
+                            LEARN1 <= 41 & LEARN1 >= 40 ~ 4,
+                            LEARN1 <= 51 & LEARN1 >= 50 ~ 5,
+                            LEARN1 <= 61 & LEARN1 >= 60 ~ 6,
+                            LEARN1 <= 71 & LEARN1 >= 70 ~ 7,
+                            LEARN1 <= 81 & LEARN1 >= 80 ~ 8,
+                            LEARN1 <= 91 & LEARN1 >= 90 ~ 9,
+                            LEARN1 == 99 ~ NA,
+                            TRUE ~ LEARN1),
+         LEARN2 = case_when(LEARN2 == 11 ~ 1,
+                            LEARN2 <= 21 & LEARN2 >= 20 ~ 2,
+                            LEARN2 <= 31 & LEARN2 >= 30 ~ 3,
+                            LEARN2 <= 41 & LEARN2 >= 40 ~ 4,
+                            LEARN2 <= 51 & LEARN2 >= 50 ~ 5,
+                            LEARN2 <= 61 & LEARN2 >= 60 ~ 6,
+                            LEARN2 <= 71 & LEARN2 >= 70 ~ 7,
+                            LEARN2 <= 81 & LEARN2 >= 80 ~ 8,
+                            LEARN2 <= 91 & LEARN2 >= 90 ~ 9,
+                            LEARN2 == 99 ~ NA,
+                            TRUE ~ LEARN2),
+         LEARN3 = case_when(LEARN3 == 11 ~ 1,
+                            LEARN3 <= 21 & LEARN3 >= 20 ~ 2,
+                            LEARN3 <= 31 & LEARN3 >= 30 ~ 3,
+                            LEARN3 <= 41 & LEARN3 >= 40 ~ 4,
+                            LEARN3 <= 51 & LEARN3 >= 50 ~ 5,
+                            LEARN3 <= 61 & LEARN3 >= 60 ~ 6,
+                            LEARN3 <= 71 & LEARN3 >= 70 ~ 7,
+                            LEARN3 <= 81 & LEARN3 >= 80 ~ 8,
+                            LEARN3 <= 91 & LEARN3 >= 90 ~ 9,
+                            LEARN3 == 99 ~ NA,
+                            TRUE ~ LEARN3),
+         RECALL = case_when(RECALL == 11 ~ 1,
+                            RECALL <= 21 & RECALL >= 20 ~ 2,
+                            RECALL <= 31 & RECALL >= 30 ~ 3,
+                            RECALL <= 41 & RECALL >= 40 ~ 4,
+                            RECALL <= 51 & RECALL >= 50 ~ 5,
+                            RECALL <= 61 & RECALL >= 60 ~ 6,
+                            RECALL <= 71 & RECALL >= 70 ~ 7,
+                            RECALL <= 81 & RECALL >= 80 ~ 8,
+                            RECALL <= 91 & RECALL >= 90 ~ 9,
+                            RECALL == 99 ~ NA,
+                            TRUE ~ RECALL))
+
+```
+
+
+
+
+```{r}
+cognitive <- cognitive %>%
+  mutate(NAME = ifelse(NAME >= 2 & NAME <= 9, NA, NAME),
+         PENCIL = ifelse(PENCIL >= 2 & PENCIL <= 9, NA, PENCIL),
+         WATCH = ifelse(WATCH >= 2 & WATCH <= 9, NA, WATCH),
+         CHAIR = ifelse(CHAIR >= 2 & CHAIR <= 9, NA, CHAIR),
+         SHOES = ifelse(SHOES >= 2 & SHOES <= 9, NA, SHOES),
+         KNUCKLE = ifelse(KNUCKLE >= 2 & KNUCKLE <= 9, NA, KNUCKLE),
+         ELBOW = ifelse(ELBOW >= 2 & ELBOW <= 9, NA, ELBOW),
+         SHOULD = ifelse(SHOULD >= 2 & SHOULD <= 9, NA, SHOULD),
+         BRIDGE = ifelse(BRIDGE >= 2 & BRIDGE <= 9, NA, BRIDGE),
+         HAMMER = ifelse(HAMMER >= 2 & HAMMER <= 9, NA, HAMMER),
+         PRAY = ifelse(PRAY >= 2 & PRAY <= 9, NA, PRAY),
+         CHEMIST = ifelse(CHEMIST >= 2 & CHEMIST <= 9, NA, CHEMIST),
+         REPEAT = ifelse(REPEAT >= 2 & REPEAT <= 9, NA, REPEAT),
+         TOWN = ifelse(TOWN >= 2 & TOWN <= 9, NA, TOWN),
+         CHIEF = ifelse(CHIEF >= 2 & CHIEF <= 9, NA, CHIEF),
+         STREET = ifelse(STREET >= 2 & STREET <= 9, NA, STREET),
+         STORE = ifelse(STORE >= 2 & STORE <= 9, NA, STORE),
+         ADDRESS = ifelse(ADDRESS >= 2 & ADDRESS <= 9, NA, ADDRESS),
+         LONGMEM = ifelse(LONGMEM >= 2 & LONGMEM <= 9, NA, LONGMEM),
+         MONTH = ifelse(MONTH >= 2 & MONTH <= 9, NA, MONTH),
+         DAY = ifelse(DAY >= 2 & DAY <= 9, NA, DAY),
+         YEAR = ifelse(YEAR >= 2 & YEAR <= 9, NA, YEAR),
+         SEASON = ifelse(SEASON >= 2 & SEASON <= 9, NA, SEASON),
+         NOD = ifelse(NOD >= 2 & NOD <= 9, NA, NOD),
+         POINT = ifelse(POINT >= 2 & POINT <= 9, NA, POINT),
+         CIRCLE = ifelse(CIRCLE >= 2 & CIRCLE <= 9, NA, CIRCLE),
+         PENTAG = ifelse(PENTAG >= 2 & PENTAG <= 9, NA, PENTAG),
+         ANIMALS = ifelse(ANIMALS >= 46, NA, ANIMALS),
+         WORDIMM = ifelse(WORDIMM >= 4, NA, WORDIMM),
+         WORDDEL = ifelse(WORDDEL >= 4, NA, WORDDEL),
+         PAPER = ifelse(PAPER >= 4, NA, PAPER),
+         STORY = ifelse(STORY >= 7, NA, STORY),
+         RECALL = ifelse(RECALL >= 11, NA, RECALL),
+         NRECALL = ifelse(NRECALL >= 2, NA, NRECALL))
+
+
+
+```
+
+
+
+# calculations
+```{r}
+cognitive <- cognitive %>%
+  mutate(ANIMTOT = ANIMALS / 23,
+         WORDTOT1 = WORDIMM / 3,
+         WORDTOT2 = WORDDEL / 3,
+         PAPERTOT = PAPER / 3,
+         STORYTOT = STORY / 6,
+         COGSCORE = 1.03125*(NAMETOT + COUNT + ANIMTOT + WORDTOT1 + WORDTOT2 + PAPERTOT + STORYTOT),
+         IMMED = LEARN1 + LEARN2 + LEARN3,
+         IMMED = ifelse(IMMED >= 30, NA, IMMED),
+         LANGEXPR = BRIDGE + HAMMER + PRAY + CHEMIST,
+         LANGCOMP = NOD + POINT,
+         ORIENTTI = MONTH + DAY + YEAR + SEASON,
+         ORIENTSP = TOWN + STREET + STORE + ADDRESS,
+         OBJNAME = PENCIL + WATCH + CHAIR + SHOES + KNUCKLE + ELBOW + SHOULD,
+         MEM = WORDDEL + WORDIMM + NRECALL + STORY,
+         LANGUAGE = LANGEXPR + LANGCOMP,
+         ORIENTAT = ORIENTTI + ORIENTSP + CHIEF)
+
+
+```
+
+# short version :cogscore = 1.03125 * (NAMETOT + count + ANIMTOT + WORDTOT1 + WORDTOT2 + PAPERTOT + STORYTOT)
+
+# RECODE
+```{r}
+cognitive <- cognitive %>%
+  mutate(PRED_RECALL = (0.344 * IMMED) - 0.339,
+         PRED_RECALL = case_when(PRED_RECALL <= 0 ~ 0,
+                                 PRED_RECALL >= 10 ~ 10,
+                                 TRUE ~ PRED_RECALL),
+         RECALL_ORIGINAL = RECALL,
+         RECALL = ifelse(is.na(RECALL), 999, RECALL),
+         RECALL = ifelse(RECALL == 999, PRED_RECALL, RECALL),
+         RECALL = ifelse(RECALL >= 11, NA, RECALL))
+
+```
+
+# OUTPUE
+```{r}
+write.table(cognitive, file = "csidsubj.csv", sep = ",", row.names = F)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

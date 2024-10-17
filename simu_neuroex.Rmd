@@ -1,0 +1,116 @@
+---
+title: "simu_neuroex"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-08-04"
+output: html_document
+---
+```{r}
+library(dplyr)
+```
+
+
+```{r}
+n = 1000
+set.seed(1105)
+start_date <- as.Date("1990-01-01")
+end_date <- as.Date("2020-12-31")
+date_sequence <- seq(from = start_date, to = end_date, by = "day")
+DATE <- sample(date_sequence, n, replace = T)
+INTERID <- sample(10 : 9999, n, replace = F)
+HOUSEID <- sample(n : 9999, n, replace = F)
+PARTICID <- sample(1 : 9999, n, replace = F)
+PULSE <- sample(60:100, n, replace = T)
+BPSYS1 <- sample(90:120, n, replace = T)
+BPDIAS1 <- sample(60:80, n, replace = T)
+BPSYS2 <- sample(90:120, n, replace = T)
+BPDIAS2 <- sample(60:80, n, replace = T)
+BPSYS3 <- sample(90:120, n, replace = T)
+BPDIAS3 <- sample(60:80, n, replace = T)
+ARMCIRC <- sample(20:30, n, replace = T)
+SKCIRC <- sample(50:60, n, replace = T)
+WSTCIRC <- sample(60:94, n, replace = T)
+HIPCIRC <- sample(90:120, n, replace = T)
+LGLENGTH <- sample(70:90, n, replace = T)
+HEIGHT <- sample(160:185, n, replace = T)
+NOE1 <- sample(c(0, 1, 2), n, replace = T)
+NOE3B <- sample(c(0, 1, 2, 3), n, replace = T)
+NOE2A <- sample(c(4, 1, 2, 3), n, replace = T)
+NOE2B <- sample(c(0, 1), n, replace = T)
+NOE2C <- sample(c(0, 1), n, replace = T)
+NEO4B <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO4E <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO4F <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO5A <- sample(c(0, 1), n, replace = T)               #if = 0, skip to neo6au
+NEO5B <- sample(c(1, 2), n, replace = T)
+NEO6AU <- sample(c(0, 1, 2), n, replace = T)
+NEO6AL <- sample(c(0, 1, 2), n, replace = T)
+NEO6BU <- sample(c(0, 1, 2), n, replace = T)
+NEO6BL <- sample(c(0, 1, 2), n, replace = T)
+NEO6CU <- sample(c(0, 1, 2), n, replace = T)
+NEO6CL <- sample(c(0, 1, 2), n, replace = T)
+NEO6DU <- sample(c(0, 1, 2), n, replace = T)
+NEO6DL <- sample(c(0, 1, 2), n, replace = T)
+DOMHAND <- sample(c(1, 2), n, replace = T)
+NEO7A <- sample(c(0, 1), n, replace = T)
+NEO7B <- sample(c(0, 1), n, replace = T)
+NEO7C <- sample(c(0, 1), n, replace = T)
+NEO7D <- sample(c(0, 1), n, replace = T)
+NEO7E <- sample(c(0, 1), n, replace = T)
+NEO7F <- sample(c(0, 1), n, replace = T)
+HAND <- sample(c(1, 2), n, replace = T)
+NEO8A <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO8B <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO8C <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO8D <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO11A <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO11B <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO11C <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO11D <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO11E <- sample(c(0, 1, 2, 3), n, replace = T)
+NEO12A <- sample(7:10, n, replace = T)
+NEO12B <- sample(4:7, n, replace = T)
+NEO12C <- sample(c(0, 1, 2), n, replace = T)
+NEO13D <- sample(c(0, 1, 2), n, replace = T)
+NEO14E <- sample(c(0, 1, 2), n, replace = T)
+NEO14G <- sample(c(0, 1, 2), n, replace = T)
+```
+
+
+
+
+```{r}
+simu_neuroex <- data.frame(DATE, INTERID, HOUSEID, PARTICID, PULSE, BPSYS1, BPDIAS1, BPSYS2, BPDIAS2, BPSYS3, BPDIAS3, ARMCIRC, SKCIRC, WSTCIRC, HIPCIRC, LGLENGTH, HEIGHT, NOE1, NOE3B, NOE2A, NOE2B, NOE2C, NEO4B, NEO4E, NEO4F, NEO5A, NEO5B, NEO6AU, NEO6AL, NEO6BU, NEO6BL, NEO6CU, NEO6CL, NEO6DU, NEO6DL, DOMHAND, NEO7A, NEO7B, NEO7C, NEO7D, NEO7E, NEO7F, HAND, NEO8A, NEO8B, NEO8C, NEO8D, NEO11A, NEO11B, NEO11C, NEO11D, NEO11E, NEO12A, NEO12B, NEO12C, NEO13D, NEO14E, NEO14G)
+
+
+
+```
+
+
+```{r}
+simu_neuroex <- simu_neuroex %>%
+  mutate(NEO5B = ifelse(NEO5A == 0, "", NEO5B))
+
+```
+
+
+
+
+```{r}
+write.table(simu_neuroex, file = "simu_neuroex.csv", sep = ",", row.names = F)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

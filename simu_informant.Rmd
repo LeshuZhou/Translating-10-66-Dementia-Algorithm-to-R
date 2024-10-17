@@ -1,0 +1,544 @@
+---
+title: "simu_informant"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-07-29"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+n = 1000
+set.seed(1105)
+start_date <- as.Date("1990-01-01")
+end_date <- as.Date("2020-12-31")
+date_sequence <- seq(from = start_date, to = end_date, by = "day")
+DATE <- sample(date_sequence, n, replace = T)
+INTERID <- sample(10 : 9999, n, replace = F)
+HOUSEID <- sample(n : 9999, n, replace = F)
+PARTICID <- sample(1 : 9999, n, replace = F)
+CARERAGE <- sample(18:55, n, replace = T)
+CARERSEX <- sample(c(1, 2), n, replace = T)
+CARERREL <- sample(1:9, n, replace = T)
+CARELIVE <- sample(c(1, 0), n, replace = T)
+CAREMAR <- sample(c(1, 2, 3, 4, 9), n, replace = T)
+CAREEDUC <- sample(1:5, n, replace = T)
+CJOB <- sample(1:6, n, replace = T)     # if = 3:6, skip to CBNTYPE1
+CJOBCAT <- sample(c(1:9, 99), n, replace = T)
+CBNTYPE1 <- sample(c(1:9, 999999), n, replace = T)
+CBNTYPE2 <- sample(c(1:9, 999999), n, replace = T)
+CBNTYPE3 <- sample(c(1:9, 999999), n, replace = T)
+CBNTYPE4 <- sample(c(1:9, 999999), n, replace = T)
+CBEN1 <- sample(c(n:9999, 999999), n, replace = T)
+CBEN2 <- sample(c(n:9999, 999999), n, replace = T)
+CBEN3 <- sample(c(n:9999, 999999), n, replace = T)
+CBEN4 <- sample(c(n:9999, 999999), n, replace = T)    # 开会
+AM1 <- sample(c(1, 0, 2), n, replace = T)
+PM1 <- sample(c(1, 0, 2), n, replace = T)
+EVE1 <- sample(c(1, 0, 2), n, replace = T)
+NITE1 <- sample(c(1, 0, 2), n, replace = T)
+AM2 <- sample(c(1, 0, 2), n, replace = T)
+PM2 <- sample(c(1, 0, 2), n, replace = T)
+EVE2 <- sample(c(1, 0, 2), n, replace = T)
+NITE2 <- sample(c(1, 0, 2), n, replace = T)
+SRQ1 <- sample(c(1, 0), n, replace = T)
+SRQ2 <- sample(c(1, 0), n, replace = T)
+SRQ3 <- sample(c(1, 0), n, replace = T)
+SRQ4 <- sample(c(1, 0), n, replace = T)
+SRQ5 <- sample(c(1, 0), n, replace = T)
+SRQ6 <- sample(c(1, 0), n, replace = T)
+SRQ7 <- sample(c(1, 0), n, replace = T)
+SRQ8 <- sample(c(1, 0), n, replace = T)
+SRQ9 <- sample(c(1, 0), n, replace = T)
+SRQ10 <- sample(c(1, 0), n, replace = T)
+SRQ11 <- sample(c(1, 0), n, replace = T)
+SRQ12 <- sample(c(1, 0), n, replace = T)
+SRQ13 <- sample(c(1, 0), n, replace = T)
+SRQ14 <- sample(c(1, 0), n, replace = T)
+SRQ15 <- sample(c(1, 0), n, replace = T)
+SRQ16 <- sample(c(1, 0), n, replace = T)
+SRQ17 <- sample(c(1, 0), n, replace = T)
+SRQ18 <- sample(c(1, 0), n, replace = T)
+SRQ19 <- sample(c(1, 0), n, replace = T)
+SRQ20 <- sample(c(1, 0), n, replace = T)
+QUINCOMPAR <- character(n)                      # 开会
+QUECLASEDE <- character(n)
+FUERADELHO <- character(n)
+QUIENENLAF <- character(n)
+QUAYUDAUST <- character(n)
+AYUDAUSTED <- character(n)
+HAYALGUIEN <- character(n)
+AMIGOSYVEC <- character(n)
+CARENEED <- sample(1:3, n, replace = T)      # if = 3, skip to ACTIV
+CAREWHO1 <- sample(1:4, n, replace = T)
+CAREWHO2 <- sample(1:3, n, replace = T)
+CUTBACK <- sample(1:3, n, replace = T)    # if = 2, skip to CUTHOUR, if = 3 skip to CAREHELP
+CUTWHEN <- sample(1:36, n, replace = T)
+CUTHOUR <- sample(1:20, n, replace = T)
+CAREHELP <- sample(c(1, 0), n, replace = T)    # if = 0 skip to DAYPAID
+HELPHOUR <- sample(1:20, n, replace = T)
+HELPCUT <- sample(c(1, 0), n, replace = T)    # if = 0 skip to DAYPAID
+HELPWEEK <- sample(1:12, n, replace = T)
+HELPJOB <- sample(c(1:9, 99), n, replace = T)
+DAYPAID <- sample(1:4, n, replace = T)
+NTPAID <- sample(1:3, n, replace = T)
+CASHRS1 <- sample(c(0:24, 99), n, replace = T)
+CASHRS2 <- sample(0:3, n, replace = T)
+CASHRS3 <- sample(0:3, n, replace = T)
+CASHRS4 <- sample(0:3, n, replace = T)
+CASHRS5 <- sample(0:3, n, replace = T)
+CASHRS6 <- sample(c(0:24, 99), n, replace = T)
+CASHRS7 <- sample(0:3, n, replace = T)
+CASHRS8 <- sample(0:3, n, replace = T)
+ZB1 <- sample(0:4, n, replace = T)
+ZB2 <- sample(0:4, n, replace = T)
+ZB3 <- sample(0:4, n, replace = T)
+ZB4 <- sample(0:4, n, replace = T)
+ZB5 <- sample(0:4, n, replace = T)
+ZB6 <- sample(0:4, n, replace = T)
+ZB7 <- sample(0:4, n, replace = T)
+ZB8 <- sample(0:4, n, replace = T)
+ZB9 <- sample(0:4, n, replace = T)
+ZB10 <- sample(0:4, n, replace = T)
+ZB11 <- sample(0:4, n, replace = T)
+ZB12 <- sample(0:4, n, replace = T)
+ZB13 <- sample(0:4, n, replace = T)
+ZB14 <- sample(0:4, n, replace = T)
+ZB15 <- sample(0:4, n, replace = T)
+ZB16 <- sample(0:4, n, replace = T)
+ZB17 <- sample(0:4, n, replace = T)
+ZB18 <- sample(0:4, n, replace = T)
+ZB19 <- sample(0:4, n, replace = T)
+ZB20 <- sample(0:4, n, replace = T)
+ZB21 <- sample(0:4, n, replace = T)
+ZB22 <- sample(0:4, n, replace = T)
+ACTIV <- sample(c(1, 0), n, replace = T)
+MENTAL <- sample(c(1, 0), n, replace = T)
+MEMORY <- sample(c(1, 0), n, replace = T)
+PUT <- sample(c(1, 0, 2), n, replace = T)
+KEPT <- sample(c(1, 0, 2), n, replace = T)
+FRDNAME <- sample(c(1, 0, 2), n, replace = T)
+FAMNAME <- sample(c(1, 0, 2), n, replace = T)
+CONVERS <- sample(c(1, 0, 2), n, replace = T)
+WORDFIND <- sample(c(1, 0, 2), n, replace = T)
+WORDWRG <- sample(c(1, 0, 2), n, replace = T)
+PAST <- sample(c(1, 0, 2), n, replace = T)
+LASTSEE <- sample(c(1, 0, 2), n, replace = T)
+LASTDAY <- sample(c(1, 0, 2), n, replace = T)
+ORIENT <- sample(c(1, 0, 2), n, replace = T)
+LOSTOUT <- sample(c(1, 0, 2), n, replace = T)
+LOSTIN <- sample(c(1, 0, 2), n, replace = T)
+CHORES <- sample(c(1, 0, 2), n, replace = T)
+CHOREDIS <- sample(c(1, 0), n, replace = T)
+HOBBY <- sample(c(1, 0), n, replace = T)
+MONEY <- sample(c(1, 0, 2), n, replace = T)
+CHANGE <- sample(c(1, 0, 2), n, replace = T)
+REASON <- sample(c(1, 0), n, replace = T)
+FEED <- sample(c(1, 0, 2, 3), n, replace = T)
+FEEDDIS <- sample(c(1, 0), n, replace = T)
+DRESS <- sample(c(1, 0, 2, 3), n, replace = T)
+DRESSDIS <- sample(c(1, 0), n, replace = T)
+TOILET <- sample(c(1, 0, 2, 3), n, replace = T)
+TOILDIS <- sample(c(1, 0), n, replace = T)
+MISTAKE <- sample(c(1, 0), n, replace = T)
+DECIDE <- sample(c(1, 0), n, replace = T)
+MUDDLED <- sample(c(1, 0), n, replace = T)
+
+
+put <- case_when(PUT == 0 ~ 0, PUT == 1 ~ 0.5, PUT == 2 ~ 1)
+kept <- case_when(KEPT == 0 ~ 0, KEPT == 1 ~ 0.5, KEPT == 2 ~ 1)
+frdname <- case_when(FRDNAME == 0 ~ 0, FRDNAME == 1 ~ 0.5, FRDNAME == 2 ~ 1)
+famname <- case_when(FAMNAME == 0 ~ 0, FAMNAME == 1 ~ 0.5, FAMNAME == 2 ~ 1)
+convers <- case_when(CONVERS == 0 ~ 0, CONVERS == 1 ~ 0.5, CONVERS == 2 ~ 1)
+wordfind <- case_when(WORDFIND == 0 ~ 0, WORDFIND == 1 ~ 0.5, WORDFIND == 2 ~ 1)
+wordwrg <- case_when(WORDWRG == 0 ~ 0, WORDWRG == 1 ~ 0.5, WORDWRG == 2 ~ 1)
+past <- case_when(PAST == 0 ~ 0, PAST == 1 ~ 0.5, PAST == 2 ~ 1)
+lastsee <- case_when(LASTSEE == 0 ~ 0, LASTSEE == 1 ~ 0.5, LASTSEE == 2 ~ 1)
+lastday <- case_when(LASTDAY == 0 ~ 0, LASTDAY == 1 ~ 0.5, LASTDAY == 2 ~ 1)
+orient <- case_when(ORIENT == 0 ~ 0, ORIENT == 1 ~ 0.5, ORIENT == 2 ~ 1)
+lostout <- case_when(LOSTOUT == 0 ~ 0, LOSTOUT == 1 ~ 0.5, LOSTOUT == 2 ~ 1)
+lostin <- case_when(LOSTIN == 0 ~ 0, LOSTIN == 1 ~ 0.5, LOSTIN == 2 ~ 1)
+chores <- case_when(CHORES == 0 ~ 0, CHORES == 1 ~ 0.5, CHORES == 2 ~ 1)
+money <- case_when(MONEY == 0 ~ 0, MONEY == 1 ~ 0.5, MONEY == 2 ~ 1)
+change <- case_when(CHANGE == 0 ~ 0, CHANGE == 1 ~ 0.5, CHANGE == 2 ~ 1)
+endif <- ACTIV + MENTAL + MEMORY + put + kept +frdname + famname + convers + wordfind + wordwrg + past + lastsee + lastday + orient + lostout + lostin + chores + CHOREDIS + HOBBY + money + change + REASON + FEED + FEEDDIS + DRESS + DRESSDIS + TOILET + TOILDIS + MISTAKE + DECIDE + MUDDLED    # 开会
+
+
+ENDIF <- ifelse(endif <= 2, 1, 0)          # if <= 2 skip to NPI1, if > 2 keep going
+TIMEONS <- sample(1:36, n, replace = T)
+TYPEONS <- sample(1:3, n, replace = T)
+ONS1 <- sample(c(1, 0), n, replace = T)
+ONS2 <- sample(c(1, 0), n, replace = T)
+ONS3 <- sample(c(1, 0), n, replace = T)
+ONS4 <- sample(c(1, 0), n, replace = T)
+ONS5 <- sample(c(1, 0), n, replace = T)
+ONS6 <- sample(c(1, 0), n, replace = T)
+ONS7 <- sample(c(1, 0), n, replace = T)
+ONS8 <- sample(c(1, 0), n, replace = T)
+ONS9 <- sample(c(1, 0), n, replace = T)
+ONS10 <- sample(c(1, 0), n, replace = T)
+ONS11 <- sample(c(1, 0), n, replace = T)
+ONS12 <- sample(c(1, 0), n, replace = T)
+ONS13 <- sample(c(1, 0), n, replace = T)
+ONS14 <- sample(c(1, 0), n, replace = T)
+ONS15 <- sample(c(1, 0), n, replace = T)
+ONS16 <- sample(c(1, 0), n, replace = T)
+ONS17 <- sample(c(1, 0), n, replace = T)
+ONS18 <- sample(c(1, 0), n, replace = T)
+ONS19 <- sample(c(1, 0), n, replace = T)
+ONS20 <- sample(c(1, 0), n, replace = T)
+ONS21 <- sample(c(1, 0), n, replace = T)
+ONS221 <- sample(1:3, n, replace = T)
+FLUCT <- sample(c(1, 0), n, replace = T)    # if = 0 skip to GRADDEC
+FLUCTCOG <- sample(c(1, 0), n, replace = T)    # if = 0 skip to GRADDEC
+FLUCTOFT <- sample(1:4, n, replace = T)
+GRADDEC <- sample(c(1, 0), n, replace = T)
+STEPWISE <- sample(c(1, 0), n, replace = T)    # if = 0 skip to CLOUDING
+STEP1 <- sample(c(1:12, 99), n, replace = T)
+STEP2 <- sample(c(1:12, 99), n, replace = T)
+STEP3 <- sample(c(1:12, 99), n, replace = T)
+STEP4 <- sample(c(1:12, 99), n, replace = T)
+STEPPRE1 <- sample(c(0:4, 9), n, replace = T)
+STEPPRE2 <- sample(c(0:4, 9), n, replace = T)
+STEPPRE3 <- sample(c(0:4, 9), n, replace = T)
+STEPPRE4 <- sample(c(0:4, 9), n, replace = T)
+STEPREC1 <- sample(c(1, 0, 9), n, replace = T)
+STEPREC2 <- sample(c(1, 0, 9), n, replace = T)
+STEPREC3 <- sample(c(1, 0, 9), n, replace = T)
+STEPREC4 <- sample(c(1, 0, 9), n, replace = T)
+CLOUDING <- sample(c(1, 0), n, replace = T)
+CONFNITE <- sample(c(1, 0), n, replace = T)
+CONFDAY <- sample(c(1, 0), n, replace = T)       # if = 0 for 3 items above skip to BCHANGE
+NOCTURN <- sample(c(1, 0), n, replace = T)
+BCHANGE <- sample(c(1, 0), n, replace = T)
+BSUSPIC <- sample(c(1, 0), n, replace = T)
+BIRRIT <- sample(c(1, 0), n, replace = T)
+BACCUSE <- sample(c(1, 0), n, replace = T)
+BUPSET <- sample(c(1, 0), n, replace = T)         # if = 0 skip to BVIS
+BFIRST <- sample(c(1, 0), n, replace = T)
+BVIS <- sample(c(1, 0), n, replace = T)
+BAUD <- sample(c(1, 0), n, replace = T)
+BDELUDE <- sample(c(1, 0), n, replace = T)
+DEPRESS <- sample(c(1, 0), n, replace = T)
+DEPDUR <- sample(1:3, n, replace = T)
+CRY <- sample(c(1, 0), n, replace = T)         # if = 0 skip to WISHDIE
+CRYDUR <- sample(c(1, 0), n, replace = T)
+WISHDIE <- sample(c(1, 0), n, replace = T)
+INTEREST <- sample(c(1, 0), n, replace = T)
+ANHED <- sample(c(1, 0), n, replace = T)
+SLEEP <- sample(c(1, 0), n, replace = T)
+EAT <- sample(c(1, 0), n, replace = T)
+BEREAVE <- sample(c(1, 0), n, replace = T)         # if = 0 skip to DEPIMP
+BERWHEN <- sample(1:4, n, replace = T)
+DEPIMP <- sample(c(0:2, 9), n, replace = T)
+TOLDBP <- sample(c(1, 0), n, replace = T)         # if = 0 skip to SLOW
+TREATBP <- sample(c(1, 0, 2), n, replace = T)
+CVEVENT <- sample(c(1, 0), n, replace = T)         # if = 0 skip to AFFINCON
+CVTYPE1 <- sample(c(1, 2, 9), n, replace = T)
+CVTYPE2 <- sample(c(1, 2, 9), n, replace = T)
+CVTYPE3 <- sample(c(1, 2, 9), n, replace = T)
+CVTYPE4 <- sample(c(1, 2, 9), n, replace = T)
+CVDATE1 <- sample(1:12, n, replace = T)
+CVDATE2 <- sample(1:12, n, replace = T)
+CVDATE3 <- sample(1:12, n, replace = T)
+CVDATE4 <- sample(1:12, n, replace = T)
+AFFINCON <- sample(c(1, 0), n, replace = T)
+ANGINA <- sample(c(1, 0), n, replace = T)
+INTCLAUD <- sample(c(1, 0), n, replace = T)
+MIDIAG <- sample(c(1, 0), n, replace = T)
+PARK <- sample(c(1, 0, 2), n, replace = T)       # if = 2 skip to FALLSNO
+TREMOR <- sample(c(1, 0, 2), n, replace = T)
+INITIATE <- sample(c(1, 0, 2), n, replace = T)
+SLOW <- sample(c(1, 0, 2), n, replace = T)
+MICROG <- sample(c(1, 0, 2), n, replace = T)
+FALLSNO <- sample(0:12, n, replace = T)
+ALCPAST <- sample(c(1, 32, 99), n, replace = T)
+ALCNOW <- sample(c(1, 32, 99), n, replace = T)
+HEAVYALC <- sample(c(1, 0), n, replace = T)
+ALCTREAT <- sample(c(1, 0), n, replace = T)
+ALCPROB <- sample(c(1, 0), n, replace = T)
+HYPOTHY <- sample(c(1, 0), n, replace = T)
+HYPERTHY <- sample(c(1, 0), n, replace = T)
+HI <- sample(c(1, 0, 2), n, replace = T)
+HILL <- sample(c(1, 0, 2), n, replace = T)       # if = 0 skip to FITSEVER
+LOC <- sample(c(1, 0, 2), n, replace = T)
+BEHCHANG <- sample(c(1, 0), n, replace = T)
+FITSEVER <- sample(c(1, 0), n, replace = T)       # if = 0 skip to EARLYCHG
+LONGFITS <- sample(c(1, 0), n, replace = T)
+EARLYCHG <- sample(c(1, 0), n, replace = T)
+NPI1 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI2
+NPI1SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI1D <- sample(0:5, n, replace = T)
+NPI2 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI3
+NPI2SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI2DIS <- sample(0:5, n, replace = T)
+NPI3 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI4
+NPI3SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI3DIS <- sample(0:5, n, replace = T)
+NPI4 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI5
+NPI4SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI4DIS <- sample(0:5, n, replace = T)
+NPI5 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI6
+NPI5SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI5DIS <- sample(0:5, n, replace = T)
+NPI6 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI7
+NPI6SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI6DIS <- sample(0:5, n, replace = T)
+NPI7 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI8
+NPI7SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI7DIS <- sample(0:5, n, replace = T)
+NPI8 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI9
+NPI8SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI8DIS <- sample(0:5, n, replace = T)
+NPI9 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI10
+NPI9SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI9DIS <- sample(0:5, n, replace = T)
+NPI10 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI11
+NPI10SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI10DIS <- sample(0:5, n, replace = T)
+NPI11 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to NPI12
+NPI11SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI11DIS <- sample(0:5, n, replace = T)
+NPI12 <- sample(c(1, 0), n, replace = T)       # if = 0 skip to HASCONF
+NPI12SEV <- sample(c(1, 2, 3), n, replace = T)
+NPI12DIS <- sample(0:5, n, replace = T)
+HASCONF <- sample(0:4, n, replace = T)
+```
+
+
+```{r}
+simu_informant <- data.frame(DATE, INTERID, HOUSEID, PARTICID, CARERAGE, CARERSEX, CARERREL, CARELIVE, CAREMAR, CAREEDUC, CJOB, CJOBCAT, CBNTYPE1, CBNTYPE2, CBNTYPE3, CBNTYPE4, CBEN1, CBEN2, CBEN3, CBEN4, AM1, PM1, EVE1, NITE1, AM2, PM2, EVE2, NITE2, SRQ1, SRQ2, SRQ3, SRQ4, SRQ5, SRQ6, SRQ7, SRQ8, SRQ9, SRQ10, SRQ11, SRQ12, SRQ13, SRQ14, SRQ15, SRQ16, SRQ17, SRQ18, SRQ19, SRQ20, QUINCOMPAR, QUECLASEDE, FUERADELHO, QUIENENLAF, QUAYUDAUST, AYUDAUSTED, HAYALGUIEN, AMIGOSYVEC, CARENEED, CAREWHO1, CAREWHO2, CUTBACK, CUTWHEN, CUTHOUR, CAREHELP, HELPHOUR, HELPCUT, HELPWEEK, HELPJOB, DAYPAID, NTPAID, CASHRS1, CASHRS2, CASHRS3, CASHRS4, CASHRS5, CASHRS6, CASHRS7, CASHRS8, ZB1, ZB2, ZB3, ZB4, ZB5, ZB6, ZB7, ZB8, ZB9, ZB10, ZB11, ZB12, ZB13, ZB14, ZB15, ZB16, ZB17, ZB18, ZB19, ZB20, ZB21, ZB22, ACTIV, MENTAL, MEMORY, PUT, KEPT, FRDNAME, FAMNAME, CONVERS, WORDFIND, WORDWRG, PAST, LASTSEE, LASTDAY, ORIENT, LOSTOUT, LOSTIN, CHORES, CHOREDIS, HOBBY, MONEY, CHANGE, REASON, FEED, FEEDDIS, DRESS, DRESSDIS, TOILET, TOILDIS, MISTAKE, DECIDE, MUDDLED, ENDIF, TIMEONS, TYPEONS, ONS1, ONS2, ONS3, ONS4, ONS5, ONS6, ONS7, ONS8, ONS9, ONS10, ONS11, ONS12, ONS13, ONS14, ONS15, ONS16, ONS17, ONS18, ONS19, ONS20, ONS21, ONS221, FLUCT, FLUCTCOG, FLUCTOFT, GRADDEC, STEPWISE, STEP1, STEP2, STEP3, STEP4, STEPPRE1, STEPPRE2, STEPPRE3, STEPPRE4, STEPREC1, STEPREC2, STEPREC3, STEPREC4, CLOUDING, CONFNITE, CONFDAY, NOCTURN, BCHANGE, BSUSPIC, BIRRIT, BACCUSE, BUPSET, BFIRST, BVIS, BAUD, BDELUDE, DEPRESS, DEPDUR, CRY, CRYDUR, WISHDIE, INTEREST, ANHED, SLEEP, EAT, BEREAVE, BERWHEN, DEPIMP, TOLDBP, TREATBP, CVEVENT, CVTYPE1, CVTYPE2, CVTYPE3, CVTYPE4, CVDATE1, CVDATE2, CVDATE3, CVDATE4, AFFINCON, ANGINA, INTCLAUD, MIDIAG, PARK, TREMOR, INITIATE, SLOW, MICROG, FALLSNO, ALCPAST, ALCNOW, HEAVYALC, ALCTREAT, ALCPROB, HYPOTHY, HYPERTHY, HI, HILL, LOC, BEHCHANG, FITSEVER, LONGFITS, EARLYCHG, NPI1, NPI1SEV, NPI1D, NPI2, NPI2SEV, NPI2DIS, NPI3, NPI3SEV, NPI3DIS, NPI4, NPI4SEV, NPI4DIS, NPI5, NPI5SEV, NPI5DIS, NPI6, NPI6SEV, NPI6DIS, NPI7, NPI7SEV, NPI7DIS, NPI8, NPI8SEV, NPI8DIS, NPI9, NPI9SEV, NPI9DIS, NPI10, NPI10SEV, NPI10DIS, NPI11, NPI11SEV, NPI11DIS, NPI12, NPI12SEV, NPI12DIS, HASCONF)
+
+
+```
+
+```{r}
+simu_informant <- simu_informant %>%
+  mutate(CJOBCAT = ifelse(CJOB == 3:6, "", CJOBCAT),
+         CBEN1 = ifelse(CBNTYPE1 == 9 | CBNTYPE1 == 999999, 0, CBEN1),
+         CBEN2 = ifelse(CBNTYPE2 == 9 | CBNTYPE2 == 999999, 0, CBEN2),
+         CBEN3 = ifelse(CBNTYPE3 == 9 | CBNTYPE3 == 999999, 0, CBEN3),
+         CBEN4 = ifelse(CBNTYPE4 == 9 | CBNTYPE4 == 999999, 0, CBEN4),
+         CAREWHO1 = ifelse(CARENEED == 3 , "", CAREWHO1),
+         CAREWHO2 = ifelse(CARENEED == 3 , "", CAREWHO2),
+         CUTBACK = ifelse(CARENEED == 3 , "", CUTBACK),
+         CUTWHEN = ifelse(CARENEED == 3 | CUTBACK == c(2, 3) , "", CUTWHEN),
+         CUTHOUR = ifelse(CARENEED == 3 | CUTBACK == 3 , "", CUTHOUR),
+         CAREHELP = ifelse(CARENEED == 3 , "", CAREWHO1),
+         HELPHOUR = ifelse(CARENEED == 3 | CAREHELP == 0, "", HELPHOUR),
+         HELPCUT = ifelse(CARENEED == 3 | CAREHELP == 0, "", HELPCUT),
+         HELPWEEK = ifelse(CARENEED == 3 | CAREHELP == 0 | HELPCUT == 0 , "", HELPWEEK),
+         HELPJOB = ifelse(CARENEED == 3 | CAREHELP == 0, "", HELPJOB),
+         DAYPAID = ifelse(CARENEED == 3 , "", DAYPAID),
+         NTPAID = ifelse(CARENEED == 3 , "", NTPAID),
+         CASHRS1 = ifelse(CARENEED == 3 , "", CASHRS1),
+         CASHRS2 = ifelse(CARENEED == 3 , "", CASHRS2),
+         CASHRS3 = ifelse(CARENEED == 3 , "", CASHRS3),
+         CASHRS4 = ifelse(CARENEED == 3 , "", CASHRS4),
+         CASHRS5 = ifelse(CARENEED == 3 , "", CASHRS5),
+         CASHRS6 = ifelse(CARENEED == 3 , "", CASHRS6),
+         CASHRS7 = ifelse(CARENEED == 3 , "", CASHRS7),
+         CASHRS8 = ifelse(CARENEED == 3 , "", CASHRS8),
+         ZB1 = ifelse(CARENEED == 3 , "", ZB1),
+         ZB2 = ifelse(CARENEED == 3 , "", ZB2),
+         ZB3 = ifelse(CARENEED == 3 , "", ZB3),
+         ZB4 = ifelse(CARENEED == 3 , "", ZB4),
+         ZB5 = ifelse(CARENEED == 3 , "", ZB5),
+         ZB6 = ifelse(CARENEED == 3 , "", ZB6),
+         ZB7 = ifelse(CARENEED == 3 , "", ZB7),
+         ZB8 = ifelse(CARENEED == 3 , "", ZB8),
+         ZB9 = ifelse(CARENEED == 3 , "", ZB9),
+         ZB10 = ifelse(CARENEED == 3 , "", ZB10),
+         ZB11 = ifelse(CARENEED == 3 , "", ZB11),
+         ZB12 = ifelse(CARENEED == 3 , "", ZB12),
+         ZB13 = ifelse(CARENEED == 3 , "", ZB13),
+         ZB14 = ifelse(CARENEED == 3 , "", ZB14),
+         ZB15 = ifelse(CARENEED == 3 , "", ZB15),
+         ZB16 = ifelse(CARENEED == 3 , "", ZB16),
+         ZB17 = ifelse(CARENEED == 3 , "", ZB17),
+         ZB18 = ifelse(CARENEED == 3 , "", ZB18),
+         ZB19 = ifelse(CARENEED == 3 , "", ZB19),
+         ZB20 = ifelse(CARENEED == 3 , "", ZB20),
+         ZB21 = ifelse(CARENEED == 3 , "", ZB21),
+         ZB22 = ifelse(CARENEED == 3 , "", ZB22),
+         TIMEONS = ifelse(ENDIF == 1 , "", TIMEONS),
+         TYPEONS = ifelse(ENDIF == 1 , "", TYPEONS),
+         ONS1 = ifelse(ENDIF == 1 , "", ONS1),
+         ONS2 = ifelse(ENDIF == 1 , "", ONS2),
+         ONS3 = ifelse(ENDIF == 1 , "", ONS3),
+         ONS4 = ifelse(ENDIF == 1 , "", ONS4),
+         ONS5 = ifelse(ENDIF == 1 , "", ONS5),
+         ONS6 = ifelse(ENDIF == 1 , "", ONS6),
+         ONS7 = ifelse(ENDIF == 1 , "", ONS7),
+         ONS8 = ifelse(ENDIF == 1 , "", ONS8),
+         ONS9 = ifelse(ENDIF == 1 , "", ONS9),
+         ONS10 = ifelse(ENDIF == 1 , "", ONS10),
+         ONS11 = ifelse(ENDIF == 1 , "", ONS11),
+         ONS12 = ifelse(ENDIF == 1 , "", ONS12),
+         ONS13 = ifelse(ENDIF == 1 , "", ONS13),
+         ONS14 = ifelse(ENDIF == 1 , "", ONS14),
+         ONS15 = ifelse(ENDIF == 1 , "", ONS15),
+         ONS16 = ifelse(ENDIF == 1 , "", ONS16),
+         ONS17 = ifelse(ENDIF == 1 , "", ONS17),
+         ONS18 = ifelse(ENDIF == 1 , "", ONS18),
+         ONS19 = ifelse(ENDIF == 1 , "", ONS19),
+         ONS20 = ifelse(ENDIF == 1 , "", ONS20),
+         ONS21 = ifelse(ENDIF == 1 , "", ONS21),
+         ONS221 = ifelse(ENDIF == 1 , "", ONS221),
+         FLUCT = ifelse(ENDIF == 1 , "", FLUCT), 
+         FLUCTCOG = ifelse(ENDIF == 1 | FLUCT == 0, "", FLUCTCOG),
+         FLUCTOFT = ifelse(ENDIF == 1 | FLUCT == 0 | FLUCTCOG == 0, "", FLUCTOFT),
+         GRADDEC = ifelse(ENDIF == 1 , "", GRADDEC),
+         STEPWISE = ifelse(ENDIF == 1 , "", STEPWISE),
+         STEP1 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEP1),
+         STEP2 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEP2),
+         STEP3 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEP3),
+         STEP4 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEP4),
+         STEPPRE1 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEPPRE1),
+         STEPPRE2 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEPPRE2),
+         STEPPRE3 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEPPRE3),
+         STEPPRE4 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEPPRE4),
+         STEPREC1 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEPREC1),
+         STEPREC2 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEPREC2),
+         STEPREC3 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEPREC3),
+         STEPREC4 = ifelse(ENDIF == 1 | STEPWISE == 0, "", STEPREC4),
+         CLOUDING = ifelse(ENDIF == 1 , "", CLOUDING),
+         CONFNITE = ifelse(ENDIF == 1 , "", CONFNITE),
+         CONFDAY = ifelse(ENDIF == 1 , "", CONFDAY),
+         NOCTURN = ifelse(ENDIF == 1 | (CLOUDING == 0 & CONFNITE == 0 & CONFDAY == 0), "", NOCTURN),
+         BCHANGE = ifelse(ENDIF == 1 , "", BCHANGE),
+         BSUSPIC = ifelse(ENDIF == 1 , "", BSUSPIC),
+         BIRRIT = ifelse(ENDIF == 1 , "", BIRRIT),
+         BACCUSE = ifelse(ENDIF == 1 , "", BACCUSE),
+         BUPSET = ifelse(ENDIF == 1 , "", BUPSET),
+         BFIRST = ifelse(ENDIF == 1 | BUPSET == 0, "", BFIRST),
+         BVIS = ifelse(ENDIF == 1 , "", BVIS),
+         BAUD = ifelse(ENDIF == 1 , "", BAUD),
+         BDELUDE = ifelse(ENDIF == 1 , "", BDELUDE),
+         DEPRESS = ifelse(ENDIF == 1 , "", DEPRESS),
+         DEPDUR = ifelse(ENDIF == 1 , "", DEPDUR),
+         CRY = ifelse(ENDIF == 1 , "", CRY),
+         CRYDUR = ifelse(ENDIF == 1 | CRY == 0, "", CRYDUR),
+         WISHDIE = ifelse(ENDIF == 1, "", WISHDIE),
+         INTEREST = ifelse(ENDIF == 1, "", INTEREST),
+         ANHED = ifelse(ENDIF == 1, "", ANHED),
+         SLEEP = ifelse(ENDIF == 1, "", SLEEP),
+         EAT = ifelse(ENDIF == 1, "", EAT),
+         BEREAVE = ifelse(ENDIF == 1, "", BEREAVE),
+         BERWHEN = ifelse(ENDIF == 1 | BEREAVE == 0, "", BERWHEN),
+         DEPIMP = ifelse(ENDIF == 1, "", DEPIMP),
+         TOLDBP = ifelse(ENDIF == 1, "", TOLDBP),
+         TREATBP = ifelse(ENDIF == 1 | TOLDBP == 0, "", TREATBP),
+         CVEVENT = ifelse(ENDIF == 1 | TOLDBP == 0, "", CVEVENT),
+         CVTYPE1 = ifelse(ENDIF == 1 | TOLDBP == 0 | CVEVENT == 0, "", CVTYPE1),
+         CVTYPE2 = ifelse(ENDIF == 1 | TOLDBP == 0 | CVEVENT == 0, "", CVTYPE2),
+         CVTYPE3 = ifelse(ENDIF == 1 | TOLDBP == 0 | CVEVENT == 0, "", CVTYPE3),
+         CVTYPE4 = ifelse(ENDIF == 1 | TOLDBP == 0 | CVEVENT == 0, "", CVTYPE4),
+         CVDATE1 = ifelse(ENDIF == 1 | TOLDBP == 0 | CVEVENT == 0, "", CVDATE1),
+         CVDATE2 = ifelse(ENDIF == 1 | TOLDBP == 0 | CVEVENT == 0, "", CVDATE2),
+         CVDATE3 = ifelse(ENDIF == 1 | TOLDBP == 0 | CVEVENT == 0, "", CVDATE3),
+         CVDATE4 = ifelse(ENDIF == 1 | TOLDBP == 0 | CVEVENT == 0, "", CVDATE4),
+         AFFINCON = ifelse(ENDIF == 1 | TOLDBP == 0, "", AFFINCON),
+         ANGINA = ifelse(ENDIF == 1 | TOLDBP == 0, "", ANGINA),
+         INTCLAUD = ifelse(ENDIF == 1 | TOLDBP == 0, "", INTCLAUD),
+         MIDIAG = ifelse(ENDIF == 1 | TOLDBP == 0, "", MIDIAG), 
+         PARK = ifelse(ENDIF == 1 | TOLDBP == 0, "", PARK),
+         TREMOR = ifelse(ENDIF == 1 | TOLDBP == 0 | PARK == 2, "", TREMOR),
+         INITIATE = ifelse(ENDIF == 1 | TOLDBP == 0 | PARK == 2, "", INITIATE),
+         SLOW = ifelse(ENDIF == 1 | PARK == 2, "", SLOW),
+         MICROG = ifelse(ENDIF == 1 | PARK == 2, "", MICROG),
+         FALLSNO = ifelse(ENDIF == 1, "", FALLSNO),
+         ALCPAST = ifelse(ENDIF == 1, "", ALCPAST),
+         ALCNOW = ifelse(ENDIF == 1, "", ALCNOW),
+         HEAVYALC = ifelse(ENDIF == 1, "", HEAVYALC),
+         ALCTREAT = ifelse(ENDIF == 1, "", ALCTREAT),
+         ALCPROB = ifelse(ENDIF == 1, "", ALCPROB),
+         HYPOTHY = ifelse(ENDIF == 1, "", HYPOTHY),
+         HYPERTHY = ifelse(ENDIF == 1, "", HYPERTHY),
+         HI = ifelse(ENDIF == 1, "", HI),
+         HILL = ifelse(ENDIF == 1, "", HILL),
+         LOC = ifelse(ENDIF == 1 | HILL == 0, "", LOC),
+         BEHCHANG = ifelse(ENDIF == 1 | HILL == 0, "", BEHCHANG),
+         FITSEVER = ifelse(ENDIF == 1, "", FITSEVER),
+         LONGFITS = ifelse(ENDIF == 1 | FITSEVER == 0, "", LONGFITS),
+         EARLYCHG = ifelse(ENDIF == 1, "", EARLYCHG),
+         NPI1SEV = ifelse(NPI1 == 0, "", NPI1SEV),
+         NPI1D = ifelse(NPI1 == 0, "", NPI1D),
+         NPI2SEV = ifelse(NPI2 == 0, "", NPI2SEV),
+         NPI2DIS = ifelse(NPI2 == 0, "", NPI2DIS),
+         NPI3SEV = ifelse(NPI3 == 0, "", NPI3SEV),
+         NPI3DIS = ifelse(NPI3 == 0, "", NPI3DIS),
+         NPI4SEV = ifelse(NPI4 == 0, "", NPI4SEV),
+         NPI4DIS = ifelse(NPI4 == 0, "", NPI4DIS),
+         NPI5SEV = ifelse(NPI5 == 0, "", NPI5SEV),
+         NPI5DIS = ifelse(NPI5 == 0, "", NPI5DIS),
+         NPI6SEV = ifelse(NPI6 == 0, "", NPI6SEV),
+         NPI6DIS = ifelse(NPI6 == 0, "", NPI6DIS),
+         NPI7SEV = ifelse(NPI7 == 0, "", NPI7SEV),
+         NPI7DIS = ifelse(NPI7 == 0, "", NPI7DIS),
+         NPI8SEV = ifelse(NPI8 == 0, "", NPI8SEV),
+         NPI8DIS = ifelse(NPI8 == 0, "", NPI8DIS),
+         NPI9SEV = ifelse(NPI9 == 0, "", NPI9SEV),
+         NPI9DIS = ifelse(NPI9 == 0, "", NPI9DIS),
+         NPI10SEV = ifelse(NPI10 == 0, "", NPI10SEV),
+         NPI10DIS = ifelse(NPI10 == 0, "", NPI10DIS),
+         NPI11SEV = ifelse(NPI11 == 0, "", NPI11SEV),
+         NPI11DIS = ifelse(NPI11 == 0, "", NPI11DIS),
+         NPI12SEV = ifelse(NPI12 == 0, "", NPI12SEV),
+         NPI12DIS = ifelse(NPI12 == 0, "", NPI12DIS))
+
+
+```
+
+
+
+```{r}
+write.table(simu_informant, file = "simu_informant.csv", sep = ",", row.names = F)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
