@@ -1,0 +1,403 @@
+---
+title: "short version"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-09-11"
+outPUT: html_document
+---
+```{r}
+library(dplyr)
+
+```
+
+```{r}
+gms<- read.csv("simu_gms.csv")
+cog <- read.csv("simu_cognitive.csv")
+informant <- read.csv("simu_informant.csv")
+df.all <- gms %>%
+  full_join(cog, by = c("HOUSEID", "PARTICID")) %>%
+  full_join(informant, by = c("HOUSEID", "PARTICID")) 
+```
+
+
+```{r}
+## sShort 1066
+
+#* Encoding: UTF-8.
+#***
+#  THIS SYNTAX WAS TAKEN FROM THE ARCHIVE GIVEN BY ROB S. FROM THE ORIGINAL 10/66 ------ I USED data from : 1. GMS FILE, 2.csid subject processed (stage 1), 3.informant processed (stage 1)
+
+
+## This data has to have the RELSCORE already calculated (from redcap).
+
+## used RELSCORE: c("FEED", "DRESS", "TOILET", "FEEDDIS","DRESSDIS", "TOILETDIS", "ACTIV",  "MENTAL",  "MEMORY",  "PUT", "KEPT",  "FRDNAME", "FAMNAME",  "CONVERS", "WORdf.allIND","WORDWRG",  "PAST",  "LASTSEE",  "LASTDAY",  "ORIENT", "LOSTOUT",  "LOSTIN",  "CHORESSUM",  "HOBBY",  "MONEY",  "CHANGE",  "REASON",    "MISTAKE",  "DECIDE",  "MUDDLED))  
+## used for EURO-d IDEA:  c( 'depression', 'pessimism', 'wishingdeath', 'guilt', 'sleep', 'interest', 'irritability', 'appetite', 'fatigue', 'concentrationtv', 'concentrationread', 'enjoyment', 'tEARfulness', 'RELSCORE', 'gms21', 'gms29', 'gms30', 'gms104', 'gms54', 'gms113', 'gms105', 'gms51', 'gms72', 'gms117', 'gms118', 'gms114', 'gms22')
+## used for EURO-d Maori:  c(  'gms21', 'gms29', 'gms30', 'gms104', 'gms54', 'gms113', 'gms105', 'gms51', 'gms72', 'gms117', 'gms118', 'gms114', 'gms22')
+## used for cogscore IDEA:  xa <- c('ANIMALS', 'WORDIMM', 'WORDDEL', 'PAPER', 'STORY', 'PENCIL', 'WATCH', 'CHAIR', 'SHOES', 'KNUCKLE', 'ELBOW', 'SHOULD', 'BRIDGE', 'HAMMER', 'PRAY', 'CHEMIST', 'REPEAT', 'TOWN', 'CHIEF', 'STREET', 'STORE', 'ADDRESS', 'LONGMEM', 'MONTH', 'DAY', 'YEAR', 'SEASON', 'NOD', 'POINT', 'CIRCLE', 'PENTAG', 'NRECALL')
+
+## used for cogscore Maori:   xma <- c('ANIMALS', 'WORDIMM', 'WORDDEL', 'PAPER', 'STORY',  'PENCIL', 'TABLE', 'CHAIR', 'SHOES', 'FINGERS', 'EAR', 'EYES', 'GATE', 'HAMMER', 'PRAY',  'CHEMIST', 'REPEAT', 'TOWN', 'CHIEF',   'STREET', 'STORE', 'ADDRESS', 'LONGMEM', 'MONTH', 'DAY', 'YEAR', 'SEASON', 'NOD', 'POINT', 'CIRCLE', 'PENTAG', 'NRECALL')
+
+#df.all <-df.all.full
+
+df.all <- df.all %>%
+  mutate(EURO1 = Q211,
+         EURO2 = Q291,
+         EURO3 = Q301,
+         EURO4 = Q1041,
+         EURO5 = Q541,
+         EURO6 = Q1131,
+         EURO7 = Q1051,
+         EURO8 = Q511,
+         EURO9 = Q721,
+         EURO101 = Q1171,
+         EURO102 = Q1181,
+         EURO11 = Q1141,
+         EURO12 = Q221)
+
+#RELSCORE.ready <- TRUE # False if RELSCORE needs to be calculated, TRUE if it is already in the dataset
+
+```
+
+#study <- 'IDEA' # study <- 'Maori'
+
+```{r}
+
+#if(study=='IDEA'){
+# df.all<- df.all%>%mutate(
+ #   gms21 =depression,
+  #  gms29= pessimism,
+  #  gms30=wishingdeath,
+   # gms104= guilt,
+    #gms54= sleep,
+   # gms113=interest,
+  #  gms105= irritability,
+  #  gms51=appetite,
+ #   gms72= fatigue,
+ #   gms117= concentrationtv,
+ #   gms118= concentrationread,
+ #   gms114= enjoyment,
+ #   gms22=tEARfulness, 
+    
+ #   EURO1 =depression,
+ #   EURO2= pessimism,
+ #   EURO3=wishingdeath,
+ #   EURO4= guilt,
+ #   EURO5= sleep,
+ #   EURO6=interest,
+ #   EURO7= irritability,
+ #   EURO8=appetite,
+ #   EURO9= fatigue,
+ #   EURO101= concentrationtv,
+ #   EURO102= concentrationread,
+ #   EURO11= enjoyment,
+ #   EURO12=tEARfulness, 
+    
+    
+ # )  
+#}
+
+#if(study=='Maori'){
+#  df.all<- df.all%>%mutate(
+ #   depression= gms21 ,
+ #   pessimism =gms29,
+ #   wishingdeath =gms30,
+ #   guilt=gms104,
+  #  sleep=gms54,
+ #   interest=gms113,
+ #   irritability=gms105,
+#    appetite=gms51,
+ #   fatigue=gms72,
+ #   concentrationtv=gms117,
+ #   concentrationread=gms118,
+ #   enjoyment=gms114,
+ #   tEARfulness=gms22,   
+    
+ #   EURO1 =depression,
+ #   EURO2= pessimism,
+ #   EURO3=wishingdeath,
+  #  EURO4= guilt,
+  #  EURO5= sleep,
+  #  EURO6=interest,
+  #  EURO7= irritability,
+ #   EURO8=appetite,
+ #   EURO9= fatigue,
+ #   EURO101= concentrationtv,
+ #   EURO102= concentrationread,
+ #   EURO11= enjoyment,
+ #   EURO12=tEARfulness, 
+    
+    
+ # )  
+#}
+
+
+
+## In the original gms, the potential responses are 0, 1, 8, 9  or 0,1,2,8, 9
+## The short algorith, group those with categorie 2, into 0,1, 8, 9
+## 9 and 8 are set to be missing. In REDcap the missing values are 777 and 999
+## 
+## We only use gms29 (pessimism) which is a combination of q291 and q292
+## 
+
+
+df.all <- df.all %>% mutate(EURO1= case_when(EURO1%in%c(1,2)~1,EURO1==0~0,  TRUE~NA ),
+                    EURO2=case_when(EURO2%in%c(1,2)~1,EURO2==0~0,  TRUE~NA ),
+                    EURO3=case_when(EURO3%in%c(1,2)~1,EURO3==0~0,  TRUE~NA ),
+                    EURO4=case_when(EURO4%in%c(1,2)~1,EURO4==0~0,  TRUE~NA ),
+                    EURO5=case_when(EURO5%in%c(1,2)~1,EURO5==0~0,  TRUE~NA ),
+                    EURO6=case_when(EURO6%in%c(1,2)~1,EURO6==0~0,  TRUE~NA ),
+                    EURO7=case_when(EURO7%in%c(1,2)~1,EURO7==0~0,  TRUE~NA ),
+                    EURO8=case_when(EURO8%in%c(1,2)~1,EURO8==0~0,  TRUE~NA ),
+                    EURO9=case_when(EURO9%in%c(1,2)~1,EURO9==0~0,  TRUE~NA ),
+                    EURO101=case_when(EURO101%in%c(1,2)~1,EURO101==0~0,  TRUE~NA ),
+                    EURO102=case_when(EURO102%in%c(1,2)~1,EURO102==0~0,  TRUE~NA ),
+                    EURO10 =case_when(EURO101==1| EURO102==1~1, EURO101==0 & EURO102==0~0 , TRUE~NA ),
+                    EURO11=case_when(EURO11%in%c(1,2)~1,EURO11==0~0,  TRUE~NA ),
+                    EURO12=case_when(EURO12%in%c(1,2)~1,EURO12==0~0,  TRUE~NA ),
+                    
+                    ## counts missing from EUROd
+                    EURODMV= is.na(EURO1)+ is.na(EURO2)+is.na(EURO3)+
+                      is.na(EURO4)+is.na(EURO5)+is.na(EURO6)+is.na(EURO7)+
+                      is.na(EURO8)+is.na(EURO9)+is.na(EURO10)+is.na(EURO11)+is.na(EURO12),
+                    EUROTOT0=  case_when(is.na(EURO1)~0,  TRUE~EURO1)+
+                      case_when(is.na(EURO2)~0,  TRUE~EURO2)+
+                      case_when(is.na(EURO3)~0,  TRUE~EURO3)+
+                      case_when(is.na(EURO4)~0,  TRUE~EURO4)+
+                      case_when(is.na(EURO5)~0,  TRUE~EURO5)+
+                      case_when(is.na(EURO6)~0,  TRUE~EURO6)+
+                      case_when(is.na(EURO7)~0,  TRUE~EURO7)+
+                      case_when(is.na(EURO8)~0,  TRUE~EURO8)+
+                      case_when(is.na(EURO9)~0,  TRUE~EURO9)+
+                      case_when(is.na(EURO10)~0,  TRUE~EURO10)+
+                      case_when(is.na(EURO11)~0,  TRUE~EURO11)+
+                      case_when(is.na(EURO12)~0,  TRUE~EURO12),  
+                    ## if 4 or more missing, then the EUROTOTal is missing
+                    EUROTOT= case_when(EURODMV<4~EUROTOT0,TRUE~NA ),
+                    EUROCASE= case_when(EUROTOT<=3 ~0, EUROTOT>3 ~1, TRUE~NA)
+                    
+)
+```
+
+
+
+```{r}
+####   TAKEN FROM THE 1066 ORIGINAL ALGORITHM STEP 1
+####
+## RELSCORE comes form teh whanau- explain how this is done!
+## COGSCORE
+
+#RELSCORE = SUM([ACTIV],[MENTAL],[MEMORY],[PUT]/2,[KEPT]/2,[FRDNAME]/2,[FAMNAME]/2,[CONVERS]/2,[WORdf.allIND]/2,[WORDWRG]/2,[PAST]/2,[LASTSEE]/2,[LASTDAY]/2,[ORIENT]/2,[LOSTOUT]/2,[LOSTIN]/2,[CHORESSUM],[HOBBY],[MONEY]/2,[CHANGE]/2,[REASON],[FEEDSUM],[DRESSSUM],[TOILETSUM],[MISTAKE],[DECIDE],[MUDDLED])
+# FEEDSUM <-      if([FEED]=0, 0, if([FEEDDIS]=1, 0, [FEED]))
+# DRESSSUM <- if([DRESS]=0, 0, if([DRESSDIS]=1, 0, [DRESS]))
+# TOILETSUM <- if([TOILET]=0, 0, if([TOILETDIS]=1, 0, [TOILET]))
+
+#if(RELSCORE.ready == T){ # Leshu set up to TRUE
+df.all<- df.all%>%mutate(
+    FEEDSUM = ifelse(FEED==0, 0, ifelse(FEEDDIS==1, 0, FEED)),
+    DRESSSUM = ifelse(DRESS==0, 0, ifelse(DRESSDIS==1, 0, DRESS)),
+    TOILETSUM = ifelse(TOILET==0, 0, ifelse(TOILDIS==1, 0, TOILET)),
+    CHORESUM = ifelse(CHORES==0, 0, ifelse(CHOREDIS==1, 0, CHORES)),   
+    RELSCORE= as.numeric(ACTIV)+ as.numeric(MENTAL)+ as.numeric(MEMORY)+ as.numeric(PUT)/2+ as.numeric(KEPT)/2+ as.numeric(FRDNAME)/2+ as.numeric(FAMNAME)/2+ as.numeric(CONVERS)/2+ as.numeric(WORDFIND)/2+ as.numeric(WORDWRG)/2+ as.numeric(PAST)/2+ as.numeric(LASTSEE)/2+ as.numeric(LASTDAY)/2+ as.numeric(ORIENT)/2+ as.numeric(LOSTOUT)/2+ as.numeric(LOSTIN)/2+ as.numeric(CHORESUM)+ as.numeric(HOBBY)+ as.numeric(MONEY)/2+ as.numeric(CHANGE)/2+ as.numeric(REASON)+ as.numeric(FEEDSUM)+ as.numeric(DRESSSUM)+ as.numeric(TOILETSUM)+ as.numeric(MISTAKE)+ as.numeric(DECIDE)+ as.numeric(MUDDLED))  
+  
+#}
+
+```
+
+### ------------------- COGSCORE--------------------------------####
+### ------------------- COGSCORE--------------------------------####
+### ------------------- COGSCORE--------------------------------####
+
+```{r}
+
+# nick's : csidinterviewerNAME   = nrecal
+
+
+#NAMETOT <- nrecal  ## no category 2 in redcap- original from nick has category 2 and recoded to 1.
+
+
+df.all <- df.all%>%mutate(NAMETOT=NRECALL, 
+                  ANIMALS=  as.numeric(ANIMALS), # no missing because this comes from REDcap calculated as a score
+                  WORDIMM=  as.numeric(WORDIMM),
+                  WORDDEL=  as.numeric(WORDDEL),
+                  PAPER=  as.numeric(PAPER),
+                  STORY=  as.numeric(STORY),
+                  LEARN1=  as.numeric(LEARN1),
+                  LEARN2=  as.numeric(LEARN2),
+                  LEARN3=  as.numeric(LEARN3),
+                  RECALL=  as.numeric(RECALL),
+                  IMMED = LEARN1 + LEARN2 + LEARN3,
+                  CERAD = LEARN1 + LEARN2 + LEARN3 + RECALL,
+                  ANIMTOT = ANIMALS / 15,  ## resolve this 15??
+                  WORDTOT1 = WORDIMM/3,  
+                  WORDTOT2 = WORDDEL/3,
+                  PAPERTOT = PAPER/3, 
+                  STORYTOT = STORY/6
+)
+
+#         ANIMTOT = ANIMALS / 23,
+#        WORDTOT1 = WORDIMM / 3,
+#         WORDTOT2 = WORDDEL / 3,
+#         PAPERTOT = PAPER / 3,
+ #        STORYTOT = STORY / 6,
+
+```
+
+
+```{r}
+#if(study=='IDEA'){
+  # variables used:
+  # PENCIL WATCH CHAIR SHOES KNUCKLE ELBOW SHOULD BRIDGE HAMMER PRAY
+  #   CHEMIST REPEAT TOWN CHIEF STREET STORE ADDRESS LONGMEM MONTH DAY YEAR SEASON
+  #   NOD POINT CIRCLE PENTAG NAMETOT NRECALL   
+  
+  
+  df.all <- df.all %>% mutate(PENCIL=case_when(PENCIL%in%c(666, 777)~0, TRUE~PENCIL),
+                      WATCH=case_when(WATCH%in%c(666, 777)~0, TRUE~WATCH),
+                      CHAIR=case_when(CHAIR%in%c(666, 777)~0, TRUE~CHAIR),
+                      SHOES=case_when(SHOES%in%c(666, 777)~0, TRUE~SHOES),
+                      KNUCKLE=case_when(KNUCKLE%in%c(666, 777)~0, TRUE~KNUCKLE),
+                      
+                      SHOULD=case_when(SHOULD%in%c(666, 777)~0, TRUE~SHOULD),
+                      ELBOW=case_when(ELBOW%in%c(666, 777)~0, TRUE~ELBOW),
+                      BRIDGE=case_when(BRIDGE%in%c(666, 777)~0, TRUE~BRIDGE),
+                      HAMMER=case_when(HAMMER%in%c(666, 777)~0, TRUE~HAMMER),
+                      PRAY=case_when(PRAY%in%c(666, 777)~0, TRUE~PRAY),
+                      CHEMIST=case_when(CHEMIST%in%c(666, 777)~0, TRUE~CHEMIST),
+                      REPEAT=case_when(REPEAT%in%c(666, 777)~0, TRUE~REPEAT),
+                      TOWN=case_when(TOWN%in%c(666, 777)~0, TRUE~TOWN),
+                      CHIEF=case_when(CHIEF%in%c(666, 777)~0, TRUE~CHIEF),
+                      STREET=case_when(STREET%in%c(666, 777)~0, TRUE~STREET), 
+                      STORE=case_when(STORE%in%c(666, 777)~0, TRUE~STORE), 
+                      ADDRESS=case_when(ADDRESS%in%c(666, 777)~0, TRUE~ADDRESS), 
+                      LONGMEM=case_when(LONGMEM%in%c(666, 777)~0, TRUE~LONGMEM),
+                      MONTH=case_when(MONTH%in%c(666, 777)~0, TRUE~MONTH),
+                      DAY=case_when(DAY%in%c(666, 777)~0, TRUE~DAY), 
+                      YEAR=case_when(YEAR%in%c(666, 777)~0, TRUE~YEAR),
+                      SEASON=case_when(SEASON%in%c(666, 777)~0, TRUE~SEASON),
+                      NOD=case_when(NOD%in%c(666, 777)~0, TRUE~NOD),
+                      POINT=case_when(POINT%in%c(666, 777)~0, TRUE~POINT),
+                      CIRCLE=case_when(CIRCLE%in%c(666, 777)~0, TRUE~CIRCLE),
+                      PENTAG=case_when(PENTAG%in%c(666, 777)~0, TRUE~PENTAG),
+                      BRIDGE=case_when(BRIDGE%in%c(666, 777)~0, TRUE~BRIDGE),
+                      HAMMER=case_when(HAMMER%in%c(666, 777)~0, TRUE~HAMMER),
+                      PRAY=case_when(PRAY%in%c(666, 777)~0, TRUE~PRAY),
+                      CHEMIST=case_when(CHEMIST%in%c(666, 777)~0, TRUE~CHEMIST) 
+  )
+  
+
+
+
+
+  
+  df.all <- df.all%>% mutate( count = PENCIL+  WATCH + CHAIR + SHOES + KNUCKLE +  ELBOW + SHOULD + BRIDGE+  HAMMER+  PRAY+ CHEMIST + REPEAT + TOWN + CHIEF + STREET + STORE+  ADDRESS + LONGMEM +  MONTH + DAY + YEAR +  SEASON + NOD + POINT +  CIRCLE + PENTAG,
+                      LANGEXPR = BRIDGE + HAMMER + PRAY + CHEMIST)
+#}
+
+```
+
+
+
+
+
+```{r}
+
+df.all<- df.all%>% mutate(LANGCOMP = NOD + POINT, 
+                  ORIENTTI = MONTH + DAY + YEAR + SEASON,
+                  ORIENTSP = TOWN + STREET + STORE + ADDRESS, 
+                  MEM = WORDDEL  + WORDIMM + NRECALL + STORY,
+                  LANGUAGE = LANGEXPR + LANGCOMP,
+                  ORIENTAT = ORIENTTI + ORIENTSP + CHIEF,
+                  cogscore = 1.03125 * (NAMETOT + count + ANIMTOT + WORDTOT1 + WORDTOT2 + PAPERTOT + STORYTOT))
+
+         
+#         LANGCOMP = NOD + POINT,
+ #        ORIENTTI = MONTH + DAY + YEAR + SEASON,
+  #       ORIENTSP = TOWN + STREET + STORE + ADDRESS,
+   #      OBJNAME = PENCIL + WATCH + CHAIR + SHOES + KNUCKLE + ELBOW + SHOULD,
+    #     MEM = WORDDEL + WORDIMM + NRECALL + STORY,
+     #    LANGUAGE = LANGEXPR + LANGCOMP,
+      #   ORIENTAT = ORIENTTI + ORIENTSP + CHIEF
+  #       COGSCORE = 1.03125*(NAMETOT + COUNT + ANIMTOT + WORDTOT1 + WORDTOT2 + PAPERTOT + STORYTOT),
+
+########### FIN COGSCORE ##################
+```
+
+
+
+df.all<- df.all%>% mutate(
+  ncogscor=as.numeric(as.character(cut(cogscore, c(-Inf, 23.699, 28.619,30.619, 31.839, Inf ), labels=1:5))),
+  nrelscor= as.numeric(as.character(cut(RELSCORE, c(-Inf, 0, 1.99, 5, 12, Inf), labels = 1:5))),
+  ndelay = as.numeric(as.character(cut(RECALL, c(-Inf, 0, 3, 4, 6, Inf), labels=1:5))),
+  brelscor = as.numeric(as.character(cut(RELSCORE, c(-Inf, 0, 1.99, 5, 12, Inf), labels = c(0, 1.908, 2.311, 4.171,5.680)))),
+  bcogscor=as.numeric(as.character(cut(cogscore, c(-Inf, 23.699, 28.619,30.619, 31.839, Inf ), labels= c(2.801, 1.377, 0.866, 0.231, 0)))),
+  bdelay = as.numeric(as.character(cut(RECALL, c(-Inf, 0, 3, 4, 6, Inf), labels=  c(3.822, 3.349,2.575,2.176, 0) ))),
+  EURO_group = as.numeric(as.character(cut(EUROTOT, c(-Inf,0, 2,5, Inf), labels=  c(0,0.576,-0.312,-1.214) ))),
+  logodds_short = -8.905+brelscor+bcogscor+bdelay+EURO_group,
+  odds_short = exp(logodds_short),
+  prob_short = odds_short/(1+odds_short),
+  dem1066_short = as.numeric(as.character(cut(prob_short, c(-Inf,0.1999999999999,Inf ), labels=c(0, 1)))), 
+  ## the following are repeaeed??? 
+  ncogscorb= as.numeric(as.character(cut(cogscore, c(-Inf, 23.699,28.619,30.619, 31.839, Inf), labels=1:5))),
+  nrelscorb= as.numeric(as.character(cut(RELSCORE, c(-Inf, 0, 1.99, 5, 12, Inf), labels = 1:5))),
+  EURO_groupb=as.numeric(as.character(cut(EUROTOT, c(-Inf,0, 2,5, Inf), labels=  c(0,1,2,3) ))),
+  ndelayb = as.numeric(as.character(cut(RECALL, c(-Inf, 0, 3, 4, 6, Inf), labels=1:5))),
+  xrelscorb= as.numeric(as.character(recode(nrelscorb,  '1'=0,  '2'=1.497,  '3'=2.251,  '4'=4.343,  '5'=6.088  ))),
+  xcogscorb= as.numeric(as.character(recode(ncogscorb,   '1'=3.792,'2'=2.208,'3'=1.174,'4'=-0.048,'5'=0)  )),
+  xdelayb= as.numeric(as.character(recode(ndelayb,     '5'=0,'4'=1.500,'3'=1.721,'2'=2.454,'1'=3.241)))  ,
+  xEUROb = as.numeric(as.character(recode(EURO_groupb,   '0'=0,'1'=0.576,'2'=-0.312,'3'=-1.214  ))),
+  logodds_shortb = -8.905+xrelscorb+xcogscorb+xdelayb+xEUROb,
+  odds_shortb = exp(logodds_shortb),
+  prob_shortb = odds_shortb/(1+odds_shortb),
+  dem1066_shortB = as.numeric(as.character(cut(prob_shortb, c(-Inf,0.1999999999999,Inf ), labels=c(0, 1))))
+)
+
+
+
+  #       IMMED = LEARN1 + LEARN2 + LEARN3,
+   #      IMMED = ifelse(IMMED >= 30, NA, IMMED),
+    #     LANGEXPR = BRIDGE + HAMMER + PRAY + CHEMIST,
+
+
+
+
+
+```{r}
+df.all<- df.all%>% mutate(
+#  ncogscor=as.numeric(as.character(cut(cogscore, c(-Inf, 23.699, 28.619,30.619, 31.839, Inf ), labels=1:5))),
+ # nrelscor= as.numeric(as.character(cut(RELSCORE, c(-Inf, 0, 1.99, 5, 12, Inf), labels = 1:5))),
+ # ndelay = as.numeric(as.character(cut(RECALL, c(-Inf, 0, 3, 4, 6, Inf), labels=1:5))),
+ # brelscor = as.numeric(as.character(cut(RELSCORE, c(-Inf, 0, 1.99, 5, 12, Inf), labels = c(0, 1.908, 2.311, 4.171,5.680)))),
+ # bcogscor=as.numeric(as.character(cut(cogscore, c(-Inf, 23.699, 28.619,30.619, 31.839, Inf ), labels= c(2.801, 1.377, 0.866, 0.231, 0)))),
+#  bdelay = as.numeric(as.character(cut(RECALL, c(-Inf, 0, 3, 4, 6, Inf), labels=  c(3.822, 3.349,2.575,2.176, 0) ))),
+ # euro_group = as.numeric(as.character(cut(EUROTOT, c(-Inf,0, 2,5, Inf), labels=  c(0,0.576,-0.312,-1.214) ))),
+ # logodds_short = -8.905+brelscor+bcogscor+bdelay+euro_group,
+ #odds_short = exp(logodds_short),
+  #prob_short = odds_short/(1+odds_short),
+  #dem1066_shortA = as.numeric(as.character(cut(prob_short, c(-Inf,0.1999999999999,Inf ), labels=c(0, 1)))), 
+  ## the following are repeaeed??? 
+  ncogscorb= as.numeric(as.character(cut(cogscore, c(-Inf, 23.699,28.619,30.619, 31.839, Inf), labels=1:5))),
+  nrelscorb= as.numeric(as.character(cut(RELSCORE, c(-Inf, 0, 1.99, 5, 12, Inf), labels = 1:5))),
+  euro_groupb=as.numeric( case_when( EUROTOT == 0 ~ 0,  EUROTOT  >= 1 & EUROTOT <= 2 ~ 1, EUROTOT  >= 3 & EUROTOT  <= 5 ~ 2, EUROTOT > 5 ~ 3)),
+   
+  ndelayb = as.numeric(as.character(cut(RECALL, c(-Inf, 0, 3, 4, 6, Inf), labels=1:5))),
+  xrelscorb= as.numeric(as.character(recode(nrelscorb,  '1'=0,  '2'=1.497,  '3'=2.251,  '4'=4.343,  '5'=6.088  ))),
+  xcogscorb= as.numeric(as.character(recode(ncogscorb,   '1'=3.792,'2'=2.208,'3'=1.174,'4'=-0.048,'5'=0)  )),
+  xdelayb= as.numeric(as.character(recode(ndelayb,     '5'=0,'4'=1.500,'3'=1.721,'2'=2.454,'1'=3.241)))  ,
+  xeurob = as.numeric(as.character(recode(euro_groupb,   '0'=0,'1'=0.576,'2'=-0.312,'3'=-1.214  ))),
+ 
+  logodds_shortb = -8.905+xrelscorb+xcogscorb+xdelayb+xeurob,
+  odds_shortb = exp(logodds_shortb),
+  prob_shortb = odds_shortb/(1+odds_shortb),
+  dem1066_short  = as.numeric(as.character(cut(prob_shortb, c(-Inf,0.1999999999999,Inf ), labels=c(0, 1)))) ##original code
+)
+
+
+```
+
+
+```{r}
+write.table(df.all, file = "short_version.csv", sep = ",", row.names = F)
+
+```
+
+
+

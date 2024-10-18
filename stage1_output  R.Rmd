@@ -1,0 +1,284 @@
+---
+title: "stage R"
+author: 'Leshu Zhou   Uni ID: 781066521 / lzho679'
+date: "2024-05-31"
+output: html_document
+---
+
+# line 20 apply 
+# 
+
+
+```{r}
+library(haven)
+library(dplyr)
+```
+
+# read data
+```{r}
+informant <- read_spss("informant_processed.sav")
+csidsubj <- read_spss("csidsubj_processed.sav")
+gms <- read.csv("simu_gms.csv")
+
+```
+
+# MERGE
+```{r}
+csidsubj <- csidsubj %>%
+  rename(d0 = INTERID)
+```
+
+```{r}
+merged <- csidsubj %>%
+  full_join(informant, by = c("HOUSEID", "PARTICID")) %>%
+  select(-d0)
+
+```
+
+
+# dfsocre
+```{r}
+merged <- merged %>%
+  mutate(DFSCORE = 0.452322  - (0.01669918 * cogscore) + (0.03033851 * relscore))
+
+```
+
+# DFCASE & COGCASE
+```{r}
+merged <- merged %>%
+  mutate(DFCASE = case_when(DFSCORE <= 0.119 ~ 1,
+                            DFSCORE >= 0.12 & DFSCORE <= 0.183 ~ 2,
+                            DFSCORE >= 0.184 ~ 3,
+                            TRUE ~ DFSCORE),
+         COGCASE = case_when(cogscore <= 28.5 ~ 3,
+                             cogscore >= 28.50001 & cogscore <= 29.5 ~ 2,
+                             cogscore >= 29.50001 ~ 1,
+                             TRUE ~ cogscore))
+
+```
+
+# merge gms
+```{r}
+merged <- merged %>%
+  full_join(gms, by = c("HOUSEID", "PARTICID"))
+
+```
+
+# recode
+```{r}
+merged <- merged %>%
+  mutate(NCOGSCOR = case_when(cogscore <= 23.699 ~ 1,
+                              cogscore <= 28.619 & cogscore >= 23.70 ~ 2,
+                              cogscore <= 30.619 & cogscore >= 28.62 ~ 3,
+                              cogscore <= 31.839 & cogscore >= 30.62 ~ 4,
+                              cogscore >= 31.84 ~ 5),
+         
+         NRELSCOR = case_when(relscore == 0 ~ 1,
+                              relscore >= 0.01 & relscore <= 1.99 ~ 2,
+                              relscore >= 2.0 & relscore <= 5.0 ~ 3,
+                              relscore >= 5.01 & relscore <= 12.0 ~ 4,
+                              relscore >= 12.01 ~ 5),
+         
+         NDELAY = case_when(RECALL == 0 ~ 1,
+                            RECALL == 4 ~ 3,
+                            RECALL >= 1 & RECALL <= 3 ~ 2,
+                            RECALL >= 5 & RECALL <= 6 ~ 4,
+                            RECALL >= 7 ~ 5),
+         
+         BRELSCOR = case_when(NRELSCOR == 1 ~ 0,
+                              NRELSCOR == 2 ~ 1.908,
+                              NRELSCOR == 3 ~ 2.311,
+                              NRELSCOR == 4 ~ 4.171,
+                              NRELSCOR == 5 ~ 5.680),
+         
+         BCOGSCOR = case_when(NCOGSCOR == 1 ~ 2.801,
+                              NCOGSCOR == 2 ~ 1.377,
+                              NCOGSCOR == 3 ~ 0.866,
+                              NCOGSCOR == 4 ~ -0.231,
+                              NCOGSCOR == 5 ~ 0),
+         
+         BDELAY = case_when(NDELAY == 5 ~ 0,
+                            NDELAY == 4 ~ 2.176,
+                            NDELAY == 3 ~ 2.575,
+                            NDELAY == 2 ~ 3.349,
+                            NDELAY == 1 ~ 3.822))
+
+         
+merged <- merged %>%
+  mutate(EURO1 = Q211,
+         EURO2 = Q291,
+         EURO3 = Q301,
+         EURO4 = Q1041,
+         EURO5 = Q541,
+         EURO6 = Q1131,
+         EURO7 = Q1051,
+         EURO8 = Q511,
+         EURO9 = Q721,
+         EURO101 = Q1171,
+         EURO102 = Q1181,
+         EURO11 = Q1141,
+         EURO12 = Q221)
+
+```
+
+
+```{r}
+merged <- merged %>%
+  mutate(EURO1 = case_when(EURO1 %in% c(1,2) ~ 1,
+                           EURO1 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO2 = case_when(EURO2 %in% c(1,2) ~ 1,
+                           EURO2 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO3 = case_when(EURO3 %in% c(1,2) ~ 1,
+                           EURO3 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO4 = case_when(EURO4 %in% c(1,2) ~ 1,
+                           EURO4 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO5 = case_when(EURO5 %in% c(1,2) ~ 1,
+                           EURO5 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO6 = case_when(EURO6 %in% c(1,2) ~ 1,
+                           EURO6 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO7 = case_when(EURO7 %in% c(1,2) ~ 1,
+                           EURO7 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO8 = case_when(EURO8 %in% c(1,2) ~ 1,
+                           EURO8 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO9 = case_when(EURO9 %in% c(1,2) ~ 1,
+                           EURO9 == 0 ~ 0,
+                           TRUE ~ NA),
+         EURO101 = case_when(EURO101 %in% c(1,2) ~ 1,
+                             EURO101 == 0 ~ 0,
+                             TRUE ~ NA),
+         EURO102 = case_when(EURO102 %in% c(1,2) ~ 1,
+                             EURO102 == 0 ~ 0,
+                             TRUE ~ NA),
+         EURO10 = case_when(EURO101 == 1 | EURO102 == 1 ~ 1,
+                            EURO102 == 1 ~ 1,
+                            EURO101 == 0 & EURO102 == 0 ~ 0,
+                            TRUE ~ NA),
+         EURO11 = case_when(EURO11 %in% c(1,2) ~ 1,
+                            EURO11 == 0 ~ 0,
+                            TRUE ~ NA),
+         EURO12 = case_when(EURO12 %in% c(1,2) ~ 1,
+                            EURO12 == 0 ~ 0,
+                            TRUE ~ NA))
+
+
+
+```
+
+
+```{r}
+merged <- merged %>%
+  mutate(EURODMV = is.na(EURO1) + is.na(EURO2) + is.na(EURO3) + is.na(EURO4) + is.na(EURO5) + is.na(EURO6) 
+                  + is.na(EURO7) + is.na(EURO8) + is.na(EURO9) + is.na(EURO10) + is.na(EURO11) + is.na(EURO12),
+         
+         EURODTOT0 = case_when(is.na(EURO1) ~ 0, TRUE ~ EURO1) + case_when(is.na(EURO2) ~ 0, TRUE ~ EURO2) + 
+                     case_when(is.na(EURO3) ~ 0, TRUE ~ EURO3) + case_when(is.na(EURO4) ~ 0, TRUE ~ EURO4) + 
+                     case_when(is.na(EURO5) ~ 0, TRUE ~ EURO5) + case_when(is.na(EURO6) ~ 0, TRUE ~ EURO6) + 
+                     case_when(is.na(EURO7) ~ 0, TRUE ~ EURO7) + case_when(is.na(EURO8) ~ 0, TRUE ~ EURO8) + 
+                     case_when(is.na(EURO9) ~ 0, TRUE ~ EURO9) + case_when(is.na(EURO10) ~ 0, TRUE ~ EURO10) + 
+                     case_when(is.na(EURO11) ~ 0, TRUE ~ EURO11) + case_when(is.na(EURO12) ~ 0, TRUE ~ EURO12),
+        
+         ## if 4 or more missing, then the eurodtotal is missing
+         EURODTOT = case_when(EURODMV < 4 ~ EURODTOT0,
+                              TRUE ~ NA),
+         
+         EUROCASE = case_when(EURODTOT <= 3 ~ 0,
+                              EURODTOT > 3 ~ 1,
+                              TRUE ~ NA))
+
+
+
+```
+
+
+
+
+```{r}
+merged <- merged %>% 
+  mutate(EURO_GROUPB = as.numeric(as.character(cut(EURODTOT, c(-Inf, 0, 2, 5, Inf), labels = c(0, 1, 2, 3)))),
+         
+         XEUROB = as.numeric(as.character(recode(EURO_GROUPB, '0' = 0, '1' = 0.576, '2' = -0.312, '3' = -1.214))),
+         
+         gms_guess= as.numeric(as.character(cut(EURODTOT, c(-Inf, 0,1, 2,3,4, 5, Inf), labels = c(0, 1, 2, 3,4,5,6)))),
+         
+         BGMSDIAG = XEUROB,
+         
+         GMSDIAG = case_when(BGMSDIAG <= -0.674 ~ 4,
+                             BGMSDIAG <= -0.635 & BGMSDIAG >= -0.673 ~ 3,
+                             BGMSDIAG <= 0 & BGMSDIAG >= -0.634 ~ 6,
+                             BGMSDIAG <= 0.34 & BGMSDIAG >= 0.001 ~ 5,
+                             BGMSDIAG <= 1.545 & BGMSDIAG >= 0.341 ~ 2,
+                             BGMSDIAG >= 1.546 ~ 1))
+
+
+```
+
+#BGMSDIAG = case_when(GMSDIAG == 6 ~ 0,
+#                    GMSDIAG == 1 ~ 1.566,
+#                    GMSDIAG == 2 ~ 1.545,
+#                    GMSDIAG == 3 ~ -0.635,
+#                   GMSDIAG == 4 ~ -0.674,
+#                  GMSDIAG == 5 ~ 0.34))
+
+
+
+
+```{r}
+merged <- merged %>%
+  mutate(LOGODDS = -9.53 + BRELSCOR + BCOGSCOR + BDELAY + BGMSDIAG,
+         ODDS = exp(LOGODDS),
+         PROB = ODDS / (1 + ODDS),
+         DEM1066 = case_when(PROB <= 0.25591 ~ 0,
+                             PROB >= 0.25592 ~ 1))
+
+```
+
+
+
+```{r}
+write.table(merged, file = "stage1.csv", sep = ",", row.names = F)
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
